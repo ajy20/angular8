@@ -1,0 +1,374 @@
+<div role="tabpanel" class="tab-pane" *ngIf="d6StepDetails">
+    <p class="alert alert-info font-weight-bold">
+        Establish a plan to implement Permanent Corrective Actions, and define ongoing controls to ensure the root causes is eliminated. Verify no new issues have been created as a result of the solution. Monitor the long term effects and implement contigency
+        actions if necessary.
+    </p>
+    <form #d6Form="ngForm" id="d6Form" (ngSubmit)="submit()" novalidate (change)="formIsDirty()">
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Implemented Correction Actions
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row mb-2">
+                                    <div class="col-md-12">
+                                        <igx-grid #correctiveActionsGrid [data]="d6StepDetails.correctiveActions" height="300px" width="100%" [allowFiltering]="false" [paging]="true" [perPage]="10">
+                                            <igx-column width="100px" field="id" header="Action" [filterable]="false" *ngIf="(!d6StepDetails.isD6Completed && isEditable)">
+                                                <ng-template igxCell let-cell="cell">
+                                                    <button igxButton="icon" type="button" data-toggle="modal" data-target="#editCorrectiveActionModal" (click)="editCorrectiveAction(cell.value, cell.cellID.rowIndex)">
+                                                        <igx-icon>edit</igx-icon>
+                                                    </button>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="typeName" header="Type" sortable="true"></igx-column>
+                                            <igx-column field="potentialCause" header="Potential Cause" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-description>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{description}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="sourceName" header="Source" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-source>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{source}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="d6ImplementationPlan" header="Implementation Plan" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-implementationPlan>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{implementationPlan}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="d6EstimatedCost" header="Estimated Cost" sortable="true"></igx-column>
+                                            <igx-column field="d6DateImplemented" header="Date Implemented" dataType="date" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-val>
+                                                    {{val | date:'dd/MM/yyyy'}}
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="additionalNotes" header="Additional Notes" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-notes>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{notes}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                        </igx-grid>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Change Management
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="mb-0 text-grey">Change Number:</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input maxlength="64" [disabled]="d6StepDetails.isD6Completed || !isEditable" type="text" class="form-control" name="d6ChangeNumber" [(ngModel)]="d6StepDetails.d6ChangeNumber" #d6ChangeNumber="ngModel">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Corrective Action Effectiveness
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label class="mb-0 text-grey">
+                                             Date CA Effectiveness Verified:
+                                        </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <igx-date-picker hasHeader="false" [disabled]="d6StepDetails.isD6Completed || !isEditable" name="d6DateCAEVerified" id="d6DateCAEVerified" #d6DateCAEVerified mode="dropdown" format="MM/dd/yyyy" mask="MM/dd/yyyy" [(ngModel)]="d6StepDetails.d6DateCAEVerified">
+                                        </igx-date-picker>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="mb-0 text-grey">
+                                        Who Verified CA Effectiveness:
+                                        </label>
+                                    </div>
+                                    <div class="col-md-3" [ngClass]="{'getAccessAutoComplete': crossIconFlag}" *ngIf="(!d6StepDetails.isD6Completed && isEditable)">
+                                        <ng-autocomplete name="globalId" [(ngModel)]="caVerifier.globalId" #globalId="ngModel" placeHolder="Enter GlobalId or Name" [data]="results" [searchKeyword]="keyword" (inputChanged)="onChangeSearch($event)" (selected)="selectSearchEvent($event)" (inputCleared)="inputClearSearch()"
+                                            [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+                                        </ng-autocomplete>
+
+                                        <ng-template #itemTemplate let-item>
+                                            <a [innerHTML]="item.displayName"></a>
+                                            <a [innerHTML]="item.mail"></a>
+                                            <hr>
+                                        </ng-template>
+
+                                        <ng-template #notFoundTemplate let-notFound>
+                                            <div *ngIf="loadingGraphUserFlag">Loading...</div>
+                                            <div *ngIf="!loadingGraphUserFlag">Not Found</div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label class="mb-0 text-grey">
+                                            Describe the actions taken and evidence of the corrective action effectiveness:
+                                        </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <textarea maxlength="1024" rows="6" [disabled]="d6StepDetails.isD6Completed || !isEditable" class="form-control" name="d6ActionsTakenAndEvidence" [(ngModel)]="d6StepDetails.d6ActionsTakenAndEvidence" #d6ActionsTakenAndEvidence="ngModel"></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="file-list" *ngIf="caVerifierCount!=0">
+                                            <p-scrollPanel [style]="{width: '100%', height: '100px'}">
+                                                <span *ngFor="let verifier of caVerifiers">
+                                                    <h5>{{verifier.name}} - {{verifier.globalId}}
+                                                        <a (click)="deleteCAVerifier(verifier.id)" ><i *ngIf="isEditable && !d6StepDetails.isD6Completed"  class="fa fa-trash fa-3"></i></a>
+                                                    </h5>
+                                                </span>
+                                            </p-scrollPanel>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Additional Comments for D6 - Implement and Validate Containment Actions
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <textarea maxlength="1024" rows="6" [disabled]="d6StepDetails.isD6Completed || !isEditable" class="form-control" name="d6Comments" [(ngModel)]="d6StepDetails.d6Comments" #d6Comments="ngModel"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Attachment
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-3" *ngIf="isEditable">
+                                            <label class="mb-0 text-grey">Browse:</label>
+                                        </div>
+                                        <div class="col-md-9" *ngIf="isEditable">
+                                            <p-fileUpload [disabled]="d6StepDetails.isD6Completed || !isEditable" #form name="demo[]" customUpload="true" (uploadHandler)="myUploader($event,form)" (onUpload)="onUpload($event)" (onBeforeSend)="onBeforeSend($event)" multiple="multiple" [maxFileSize]=fileUploadSize>
+                                                <ng-template pTemplate="content">
+                                                    <div>
+                                                        <ul *ngIf="uploadedFiles.length">
+                                                            <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                                                        </ul>
+                                                    </div>
+                                                </ng-template>
+                                            </p-fileUpload>
+                                        </div>
+                                        <div class="col-md-3 mt-2">
+                                            <label class="mb-0 text-grey">Attachments:</label>
+                                        </div>
+                                        <div class="col-md-9 mt-2">
+                                            <span>Count: {{fileCount}}</span>
+                                            <div class="file-list" *ngIf="fileCount!=0">
+                                                <p-scrollPanel [style]="{width: '100%', height: '100px'}">
+                                                    <span *ngFor="let attachment of d6StepAttachment">
+                                                        <h5>{{attachment.name}}
+                                                            <a (click)="deleteAttachment(attachment.id)" ><i *ngIf="isEditable && !d6StepDetails.isD6Completed"  class="fa fa-trash fa-3"></i></a>
+                                                            <a [href]="attachment.url" *ngIf="!isEditable" [download]="attachment.name" [target]="_blank" style="margin-left: 1px;"><i class="fa fa-download fa-3"></i></a>
+                                                        </h5>
+                                                    </span>
+                                                </p-scrollPanel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center mb-2" *ngIf="isEditable">
+                    <input name="isD6Complete" [(ngModel)]="d6StepDetails.isD6Completed" #isD6Complete="ngModel" type="checkbox" />
+                    <label for="chkD6IsCompleted">Set this step to complete</label>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button type="button" class="btn btn-primary mr-2" (click)="redirectToStep('D5')">Previous</button>
+                    <button type="button" class="btn btn-primary mr-2" type="submit" *ngIf="isEditable" [disabled]="!d6Form.form.valid ">Save</button>
+                    <button type="button" class="btn btn-primary" (click)="redirectToStep('D7')">Next</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<div class="modal fade" id="editCorrectiveActionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 1200px;">
+        <div class="modal-content" *ngIf="correctiveAction && sourceLst">
+
+            <form #correctiveActionForm="ngForm" id="correctiveActionForm" (ngSubmit)="saveCorrectiveAction()" novalidate>
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Corrective Actions</h4>
+                    <button type="button" class="close" id='close' name='close' #close data-dismiss="modal" (click)="closeModal()">×</button>
+                </div>
+                <div class="modal-body" style="margin-left: 15px;margin-right: 25px;">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Type</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input disabled type="text" class="form-control" name="typeName" [(ngModel)]="correctiveAction.typeName" #typeName="ngModel">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Potential Cause</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="potentialCause" [(ngModel)]="correctiveAction.potentialCause" #potentialCause="ngModel">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Source</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <igx-select name="sourceId" [(ngModel)]="correctiveAction.sourceId" #sourceId="ngModel">
+                                        <label igxLabel>Select Source</label>
+                                        <igx-select-item *ngFor="let source of sourceLst" [value]="source.id">
+                                            {{source.lookupValue}}
+                                        </igx-select-item>
+                                    </igx-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Estimated Cost</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="number" class="form-control" name="d6EstimatedCost" [(ngModel)]="correctiveAction.d6EstimatedCost" #d6EstimatedCost="ngModel">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <div class="row" [style.display]="correctiveAction.sourceId == -1 ? 'block' : 'none'">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Source Other</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input maxlength="256" type="text" class="form-control" name="sourceOther" [(ngModel)]="correctiveAction.sourceOther" #sourceOther="ngModel">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Date Implemented</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <igx-date-picker hasHeader="false" name="d6DateImplemented" id="d6DateImplemented" #d6DateImplemented mode="dropdown" format="MM/dd/yyyy" mask="MM/dd/yyyy" [(ngModel)]="correctiveAction.d6DateImplemented">
+                                    </igx-date-picker>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="mb-0">Implementation Plan</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input maxlength="256" type="text" class="form-control" name="d6ImplementationPlan" [(ngModel)]="correctiveAction.d6ImplementationPlan" #d6ImplementationPlan="ngModel">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="mb-0">Additional Notes</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <textarea maxlength="256" rows="2" class="form-control" name="additionalNotes" [(ngModel)]="correctiveAction.additionalNotes" #additionalNotes="ngModel"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger pull-right" type="button" data-dismiss="modal" (click)="closeModal()"><i class="fa fa-times-circle mr-2"></i>Close</button>
+                    <button class="btn btn-primary pull-right" type="submit"><i class="fa fa-save mr-2"></i>Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

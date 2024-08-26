@@ -1,0 +1,19 @@
+<div class="col-md-3">
+    <label class="mb-0 text-grey">Global Id:</label>
+</div>
+<div class="col-md-9" [ngClass]="{'getAccessAutoComplete': crossIconFlag}">
+    <ng-autocomplete name="userGlobalId" placeHolder="Search by Global Id" [data]="results" [searchKeyword]="keyword" (inputChanged)="onChangeSearch($event)" (selected)="selectSearchEvent($event)" (inputCleared)="inputClearSearch()" [itemTemplate]="itemTemplate"
+        [notFoundTemplate]="notFoundTemplate">
+    </ng-autocomplete>
+
+    <ng-template #itemTemplate let-item>
+        <a [innerHTML]="item.displayName"></a>
+        <a [innerHTML]="item.mail"></a>
+        <hr>
+    </ng-template>
+
+    <ng-template #notFoundTemplate let-notFound>
+        <div *ngIf="loadingGraphUserFlag">Loading...</div>
+        <div *ngIf="!loadingGraphUserFlag">Not Found</div>
+    </ng-template>
+</div>

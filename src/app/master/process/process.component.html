@@ -1,0 +1,36 @@
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row mb-2">
+                            <div class="col-md-2">
+                                <label class="mb-0">Name:</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" value="">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" class="btn btn-primary">Save</button>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <igx-grid #grid1 [data]="allIncidents" [paging]="true" [perPage]="5" width="100%" height="400px" [allowFiltering]="true">
+                                    <igx-column field='incidentId' header='Name' sortable="true"></igx-column>
+                                    <igx-column header='Action' [filterable]="false">
+                                        <ng-template igxCell>
+                                            <a href="" class='btn btn-primary btn-sm' [routerLink]="['/internal8dform']">View 8D
+                                        Form</a>
+                                        </ng-template>
+                                    </igx-column>
+                                </igx-grid>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

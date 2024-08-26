@@ -1,0 +1,370 @@
+<div role="tabpanel" class="tab-pane active" id="establishTeam" *ngIf="data">
+    <form name="d1Form" #d1Form="ngForm" id="d1Form" (ngSubmit)="submit()" novalidate (change)="formIsDirty()">
+        <p class="alert alert-info font-weight-bold">
+            Establish a small group of people with the process/product knowledge, allocated time, authority, and skill in the required technical disciplines to solve the problem and implement corrective actions. The group must have a designated champion.
+        </p>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Champion
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="mb-0 text-grey">Name:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <ng-autocomplete required name="championFullName" [(ngModel)]="data.champion.fullName" #globalId="ngModel" placeHolder="Enter Global Id or Name" [data]="results" [searchKeyword]="keyword" (inputChanged)="onChangeSearch($event)" (selected)="selectSearchEvent($event,data.champion)"
+                                            [disabled]="data.isCompleted || !isEditable" (inputCleared)="inputClearSearch(championMemberType)" [itemTemplate]="ItemTemplate" [notFoundTemplate]="notFoundTemplate">
+                                        </ng-autocomplete>
+                                        <ng-template #ItemTemplate let-item>
+                                            <a [innerHTML]="item.displayName"></a>
+                                            <a [innerHTML]="item.mail"></a>
+                                            <hr>
+                                        </ng-template>
+                                        <ng-template #notFoundTemplate let-notFound>
+                                            <div *ngIf="loadingGraphUserFlag">Loading...</div>
+                                            <div *ngIf="!loadingGraphUserFlag">Not Found</div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="mb-0 text-grey">Email:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" [disabled]="data.isCompleted || !isEditable" class="form-control" [(ngModel)]="data.champion.emailId" name="championEmailId">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="mb-0 text-grey">Job Title:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" [disabled]="data.isCompleted || !isEditable" class="form-control" [(ngModel)]="data.champion.jobTitle" name="championJobTitle">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="mb-0 text-grey">Phone:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" [disabled]="data.isCompleted || !isEditable" class="form-control" [(ngModel)]="data.champion.mobilePhone" name="championMobilePhone">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-2 mb-3">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Team Leader
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="mb-0 text-grey">Name:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <ng-autocomplete required name="tlFullName" [(ngModel)]="data.teamLead.fullName" #globalId="ngModel" placeHolder="Enter Global Id or Name" [data]="results" [searchKeyword]="keyword" (inputChanged)="onChangeSearch($event)" (selected)="selectSearchEvent($event,data.teamLead)"
+                                            [disabled]="data.isCompleted || !isEditable" (inputCleared)="inputClearSearch(teamLeadMemberType)" [itemTemplate]="ItemTemplate" [notFoundTemplate]="notFoundTemplate">
+                                        </ng-autocomplete>
+                                        <ng-template #ItemTemplate let-item>
+                                            <a [innerHTML]="item.displayName"></a>
+                                            <a [innerHTML]="item.mail"></a>
+                                            <hr>
+                                        </ng-template>
+                                        <ng-template #notFoundTemplate let-notFound>
+                                            <div *ngIf="loadingGraphUserFlag">Loading...</div>
+                                            <div *ngIf="!loadingGraphUserFlag">Not Found</div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="mb-0 text-grey">Email:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" [disabled]="data.isCompleted || !isEditable" class="form-control" [(ngModel)]="data.teamLead.emailId" name="tlEmailId">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="mb-0 text-grey">Job Title:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" [disabled]="data.isCompleted || !isEditable" class="form-control" [(ngModel)]="data.teamLead.jobTitle" name="tlJobTitle">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="mb-0 text-grey">Phone:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="text" [disabled]="data.isCompleted || !isEditable" class="form-control" [(ngModel)]="data.teamLead.mobilePhone" name="tlMobilePhone">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-2 mb-3">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Core Team Members
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-sm table-team">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Job Title</th>
+                                    <th>Phone</th>
+                                    <th *ngIf="!data.isCompleted && isEditable">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="isEditable && !data.isCompleted">
+                                    <td>
+                                        <ng-autocomplete required name="newCoreFullName" [(ngModel)]="newUser[coreMemberType].obj" #globalId="ngModel" placeHolder="Enter Global Id or Name" [data]="results" [searchKeyword]="keyword" (inputChanged)="onChangeSearch($event)" (selected)="selectSearchEvent($event,newUser[coreMemberType])"
+                                            (inputCleared)="inputClearSearch(coreMemberType)" [itemTemplate]="ItemTemplate" [notFoundTemplate]="notFoundTemplate">
+                                        </ng-autocomplete>
+                                        <ng-template #ItemTemplate let-item>
+                                            <a [innerHTML]="item.displayName"></a>
+                                            <a [innerHTML]="item.mail"></a>
+                                            <hr>
+                                        </ng-template>
+                                        <ng-template #notFoundTemplate let-notFound>
+                                            <div *ngIf="loadingGraphUserFlag">Loading...</div>
+                                            <div *ngIf="!loadingGraphUserFlag">Not Found</div>
+                                        </ng-template>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="newUser[coreMemberType].emailId" name="newCoreEmailId">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="newUser[coreMemberType].jobTitle" name="newCoreJobTitle">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="newUser[coreMemberType].mobilePhone" name="newCoreMobilePhone">
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn" (click)="addNewMember(coreMemberType)" title="Add User"><i
+                                                class="fa fa-user-plus fa-3"></i></a>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let user of data.coreTeamMembers; let i=index;">
+                                    <td>
+                                        <input type="text" [disabled]="true" class="form-control form-control-sm" [value]="user.fullName" name="coreFullName{{i}}">
+                                    </td>
+                                    <td>
+                                        <input type="text" [disabled]="true" class="form-control form-control-sm" [value]="user.emailId" name="coreEmailId{{i}}">
+                                    </td>
+                                    <td>
+                                        <input type="text" [disabled]="true" class="form-control form-control-sm" [value]="user.jobTitle" name="coreJobTitle{{i}}">
+                                    </td>
+                                    <td>
+                                        <input type="text" [disabled]="true" class="form-control form-control-sm" [value]="user.mobilePhone" name="coreMobilePhone{{i}}">
+                                    </td>
+                                    <td class="text-center" *ngIf="!data.isCompleted && isEditable">
+                                        <a class="btn" (click)="deleteMember(coreMemberType,user.id)"><i
+                                                class="fa fa-trash fa-3"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-2 mb-3">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Extended Team Members
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-sm table-team">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Job Title</th>
+                                    <th>Phone</th>
+                                    <th *ngIf="!data.isCompleted && isEditable">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="isEditable && !data.isCompleted">
+                                    <td>
+                                        <ng-autocomplete required name="newExtendedFullName" [(ngModel)]="newUser[extendedMemberType].obj" #globalId="ngModel" placeHolder="Enter Global Id or Name" [data]="results" [searchKeyword]="keyword" (inputChanged)="onChangeSearch($event)" (selected)="selectSearchEvent($event,newUser[extendedMemberType])"
+                                            (inputCleared)="inputClearSearch(extendedMemberType)" [itemTemplate]="ItemTemplate" [notFoundTemplate]="notFoundTemplate">
+                                        </ng-autocomplete>
+                                        <ng-template #ItemTemplate let-item>
+                                            <a [innerHTML]="item.displayName"></a>
+                                            <a [innerHTML]="item.mail"></a>
+                                            <hr>
+                                        </ng-template>
+                                        <ng-template #notFoundTemplate let-notFound>
+                                            <div *ngIf="loadingGraphUserFlag">Loading...</div>
+                                            <div *ngIf="!loadingGraphUserFlag">Not Found</div>
+                                        </ng-template>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="newUser[extendedMemberType].emailId" name="newExtendedEmailId">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="newUser[extendedMemberType].jobTitle" name="newExtendedJobTitle">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="newUser[extendedMemberType].mobilePhone" name="newExtendedMobilePhone">
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn" (click)="addNewMember(extendedMemberType)" title="Add User"><i
+                                                class="fa fa-user-plus fa-3"></i></a>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let user of data.extendedTeamMembers; let i=index;">
+                                    <td>
+                                        <input type="text" [disabled]="true" class="form-control form-control-sm" [value]="user.fullName" name="extendedFullName{{i}}">
+                                    </td>
+                                    <td>
+                                        <input type="text" [disabled]="true" class="form-control form-control-sm" [value]="user.emailId" name="extendedEmailId{{i}}">
+                                    </td>
+                                    <td>
+                                        <input type="text" [disabled]="true" class="form-control form-control-sm" [value]="user.jobTitle" name="extendedJobTitle{{i}}">
+                                    </td>
+                                    <td>
+                                        <input type="text" [disabled]="true" class="form-control form-control-sm" [value]="user.mobilePhone" name="extendedMobilePhone{{i}}">
+                                    </td>
+                                    <td class="text-center" *ngIf="!data.isCompleted && isEditable">
+                                        <a class="btn" (click)="deleteMember(extendedMemberType,user.id)"><i
+                                                class="fa fa-trash fa-3"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-2 mb-3">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Approvers
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered table-sm table-team">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Job Title</th>
+                                    <th>Phone</th>
+                                    <th *ngIf="!data.isCompleted && isEditable && isAppoverEditable">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngIf="isEditable && !data.isCompleted && isAppoverEditable">
+                                    <td>
+                                        <ng-autocomplete required name="newApproverFullName" [(ngModel)]="newUser[approverMemberType].obj" #globalId="ngModel" placeHolder="Enter Global Id or Name" [data]="results" [searchKeyword]="keyword" (inputChanged)="onChangeSearch($event)" (selected)="selectSearchEvent($event,newUser[approverMemberType])"
+                                            (inputCleared)="inputClearSearch(approverMemberType)" [itemTemplate]="ItemTemplate" [notFoundTemplate]="notFoundTemplate">
+                                        </ng-autocomplete>
+                                        <ng-template #ItemTemplate let-item>
+                                            <a [innerHTML]="item.displayName"></a>
+                                            <a [innerHTML]="item.mail"></a>
+                                            <hr>
+                                        </ng-template>
+                                        <ng-template #notFoundTemplate let-notFound>
+                                            <div *ngIf="loadingGraphUserFlag">Loading...</div>
+                                            <div *ngIf="!loadingGraphUserFlag">Not Found</div>
+                                        </ng-template>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="newUser[approverMemberType].emailId" name="newApproverEmailId">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="newUser[approverMemberType].jobTitle" name="newApproverJobTitle">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="newUser[approverMemberType].mobilePhone" name="newApproverMobilePhone">
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn" (click)="addNewMember(approverMemberType)" title="Add User"><i
+                                                class="fa fa-user-plus fa-3"></i></a>
+                                    </td>
+                                </tr>
+                                <tr *ngFor="let user of data.approvers; let i=index;">
+                                    <td>
+                                        <input type="text" [disabled]="true" class="form-control form-control-sm" [value]="user.fullName" name="approverFullName{{i}}">
+                                    </td>
+                                    <td>
+                                        <input type="text" [disabled]="true" class="form-control form-control-sm" [value]="user.emailId" name="approverEmailId{{i}}">
+                                    </td>
+                                    <td>
+                                        <input type="text" [disabled]="true" class="form-control form-control-sm" [value]="user.jobTitle" name="approverJobTitle{{i}}">
+                                    </td>
+                                    <td>
+                                        <input type="text" [disabled]="true" class="form-control form-control-sm" [value]="user.mobilePhone" name="approverMobilePhone{{i}}">
+                                    </td>
+                                    <td class="text-center" *ngIf="!data.isCompleted && isEditable && isAppoverEditable">
+                                        <a class="btn" (click)="deleteMember(approverMemberType,user.id)"><i
+                                                class="fa fa-trash fa-3"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mb-2" *ngIf="isEditable">
+            <input name="chkD1IsCompleted" type="checkbox" id="chkD1IsCompleted" [(ngModel)]="data.isCompleted"  #isComplete="ngModel" />
+            <label for="chkD1IsCompleted">Set this step to complete</label>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button type="button" *ngIf="isEditable" class="btn btn-primary mr-2" type="button" (click)="submit()">Save</button>
+                <button type="button" class="btn btn-primary" (click)="redirectToStep('D2')">Next</button>
+            </div>
+        </div>
+
+    </form>
+</div>

@@ -1,0 +1,533 @@
+<div role="tabpanel" class="tab-pane" id="messages">
+    <form #d3Form="ngForm" id="d3Form" (ngSubmit)="submit()" *ngIf="data" (change)="formIsDirty()">
+        <p class="alert alert-info font-weight-bold">
+            Define and implement containment actions to isolate the effects from any internal/external customer (including Service Parts) until permanent corrective action is implemented. Verify the effectiveness of the containment action.
+        </p>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <label class="mb-0 text-grey">
+                                            Containment action(s):
+                                        </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <textarea maxlength="1024" [disabled]="data.isCompleted || !isEditable" name="containmentAction" [(ngModel)]="data.containmentActions" rows="2" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <label class="mb-0 text-grey">
+                                            Identification of
+                                            contained parts:
+                                        </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <textarea maxlength="1024" [disabled]="data.isCompleted || !isEditable" name="identification" [(ngModel)]="data.identification" rows="2" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <label class="mb-0 text-grey">Sorting results:</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <textarea maxlength="1024" [disabled]="data.isCompleted || !isEditable" name="sortingResults" [(ngModel)]="data.sortingResults" rows="2" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <label class="mb-0 text-grey">
+                                            Build Date for Certified Material:
+                                        </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <igx-date-picker [disabled]="data.isCompleted || !isEditable" name="certifiedMaterialBuildDate" id="certifiedMaterialBuildDate" #certifiedMaterialBuildDate mode="dropdown" format="MM/dd/yyyy" mask="MM/dd/yyyy" [(ngModel)]="data.certifiedMaterialBuildDate">
+                                        </igx-date-picker>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <label class="mb-0 text-grey">Defect #:</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <textarea maxlength="1024" [disabled]="data.isCompleted || !isEditable" name="defectNumber" [(ngModel)]="data.defectNumber" rows="2" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <label class="mb-0 text-grey">Sorted #:</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <textarea maxlength="1024" [disabled]="data.isCompleted || !isEditable" name="sortedNumber" [(ngModel)]="data.sortedNumber" rows="2" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Containment actions as per CAPS -->
+            <!-- Short Term -->
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Short Term Containment Actions
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div *ngIf="(isEditable && !data.isCompleted)" class="text-right">
+                            <a style="color: white;" class="btn btn-primary mb-2" (click)="addNewContainmentAction(this.shortTermActionType)">
+                                <i class="fa fa-plus"></i> Containment Action
+                            </a>
+                        </div>
+                        <div class="panel-group" *ngFor="let action of data.shortTermContainmentActions; let i = index">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" href="#stContainmentAction{{i}}" style="text-decoration: none" #expandSTContainmentAction id="expandSTContainmentAction{{i}}" (click)="expandCollapse(i, $event)">
+                                            <span class="fa fa-plus"></span> Containment Action {{i+1}}
+                                        </a>
+                                        <span class="pull-right">Status:
+                                            {{action.isCompleted ? 'Closed': 'Open'}}</span>
+                                    </h4>
+                                </div>
+                                <div id="stContainmentAction{{i}}" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="mb-0 text-grey">
+                                                            Brief Description Of Containment Action:
+                                                        </label>
+                                                        <textarea maxlength="1024" [disabled]="data.isCompleted || !isEditable" name="stDescription{{i}}" [(ngModel)]="action.description" rows="3" class="mb-2 form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <h5 style="margin-left: 15px;"> List clean point information</h5>
+                                                    <div class="col-md-6">
+                                                        <label class="mt-0 text-grey">
+                                                            Date:
+                                                        </label>
+                                                        <br />
+                                                        <igx-date-picker [disabled]="data.isCompleted || !isEditable" name="listClearnPointInfoDate{{i}}" id="listClearnPointInfoDate{{i}}" #listClearnPointInfoDate mode="dropdown" format="MM/dd/yyyy" mask="MM/dd/yyyy" [(ngModel)]="action.listCleanPointInfoDate">
+                                                        </igx-date-picker>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="mt-0 text-grey">
+                                                            Deviation Number:
+                                                        </label>
+                                                        <input maxlength="64" [disabled]="data.isCompleted || !isEditable" type="text" name="stDeviationNumber{{i}}" [(ngModel)]="action.deviationNumber" class="form-control mb-2" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <h5>Containment Results</h5>
+                                            </div>
+                                            <div class="col-md-4 text-right">
+                                                <button *ngIf="(isEditable && !data.isCompleted)" data-toggle="modal" data-target="#containmentResultModal" type="button" class="btn btn-primary" style="margin-bottom: 10px;float: right;" (click)="addShortTermContResult('add', shortTermActionType, i, action.id)">
+                                                    <i class="fa fa-plus"></i> Containment Result
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-md-12">
+                                                <igx-grid #gridSTContainmentResult id="gridSTContainmentResult{{i}}" [data]="action.containmentResults" height="300px" width="100%" [allowFiltering]="false" [paging]="true" [perPage]="10" [primaryKey]="'id'" [rowEditable]="false">
+                                                    <igx-column width="100px" header="Action" [filterable]="false" *ngIf="(isEditable && !data.isCompleted)">
+                                                        <ng-template igxCell let-cell="cell">
+                                                            <button igxButton="icon" type="button" data-toggle="modal" data-target="#containmentResultModal" (click)="editContainmentAction(cell.cellID.rowIndex,shortTermActionType,i,action.id)">
+                                                                <igx-icon>edit</igx-icon>
+                                                            </button>
+                                                        </ng-template>
+                                                    </igx-column>
+                                                    <igx-column #type field="sortLocation" header="Sort Location">
+                                                        <ng-template igxCell let-cell="cell">
+                                                            {{ getSortLocationName(cell.value) }}
+                                                        </ng-template>
+                                                    </igx-column>
+                                                    <igx-column [sortable]="false" field='locationDetails' header='Location Details' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'string'" width="350px">
+                                                        <ng-template igxCell let-cell="cell" let-location>
+                                                            <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                                {{location}}
+                                                            </p-scrollPanel>
+                                                        </ng-template>
+                                                    </igx-column>
+                                                    <igx-column [field]="'startDate'" header='Start Date' dataType="date" [sortable]="true">
+                                                        <ng-template igxCell let-cell="cell" let-val>
+                                                            {{val | date:'MM/dd/yyyy'}}
+                                                        </ng-template>
+                                                    </igx-column>
+                                                    <igx-column [field]="'endDate'" header='End Date' dataType="date" [sortable]="true">
+                                                        <ng-template igxCell let-cell="cell" let-val>
+                                                            {{val | date:'MM/dd/yyyy'}}
+                                                        </ng-template>
+                                                    </igx-column>
+                                                    <igx-column [sortable]="false" field='sorted' header='#Sorted' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'Number'" width="100px"></igx-column>
+                                                    <igx-column [sortable]="false" field='good' header='#Good' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'Number'" width="100px"></igx-column>
+                                                    <igx-column [sortable]="false" field='bad' header='#Bad' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'Number'" width="100px"></igx-column>
+                                                    <igx-column [sortable]="false" field='scrapped' header='#Scrapped' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'Number'" width="100px"></igx-column>
+                                                    <igx-column [sortable]="false" field='reworked' header='#Reworked' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'Number'" width="100px"></igx-column>
+                                                    <igx-column [sortable]="false" field='hours' header='#Hours' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'Number'" width="100px"></igx-column>
+                                                    <igx-column [sortable]="false" field='total' header='Total' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'Number'" width="100px"></igx-column>
+                                                    <igx-column [sortable]="false" field='responsibility' header='Responsibility' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'string'" width="150px"></igx-column>
+                                                </igx-grid>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input type="checkbox" [disabled]="data.isCompleted || !isEditable" id="stActionIsCompleted{{i}}" name="stActionIsCompleted{{i}}" [(ngModel)]="action.isCompleted" #actionIsCompleted="ngModel" />
+                                                <label for="stActionIsCompleted{{i}}">Close containment Action</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End - Short Term -->
+
+            <!-- Long Term -->
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Long Term Containment Actions
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div *ngIf="(isEditable && !data.isCompleted)" class="text-right">
+                            <a style="color: white;" class="btn btn-primary mb-2" (click)="addNewContainmentAction(this.longTermActionType)">
+                                <i class="fa fa-plus"></i> Containment Action
+                            </a>
+                        </div>
+                        <div class="panel-group" *ngFor="let action of data.longTermContainmentActions; let i = index">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" href="#ltContainmentAction{{i}}" style="text-decoration: none" id="expandLTContainmentAction{{i}}" #expandSTContainmentAction (click)="expandCollapse(i, $event)">
+                                            <span class="fa fa-plus"></span> Containment Action {{i+1}}
+                                        </a>
+                                        <span class="pull-right">Status:
+                                            {{action.isCompleted ? 'Closed': 'Open'}}</span>
+                                    </h4>
+                                </div>
+                                <div id="ltContainmentAction{{i}}" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="mb-0 text-grey">
+                                                            Brief Description Of Containment Action:
+                                                        </label>
+                                                        <textarea maxlength="1024" [disabled]="data.isCompleted || !isEditable" [disabled]="!isEditable" name="ltDescription{{i}}" [(ngModel)]="action.description" rows="3" class="mb-2 form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <h5 style="margin-left: 15px;"> List clean point information</h5>
+                                                    <div class="col-md-6">
+                                                        <label class="mt-0 text-grey">
+                                                            Date:
+                                                        </label>
+                                                        <br />
+                                                        <igx-date-picker [disabled]="data.isCompleted || !isEditable" name="ltDate{{i}}" id="ltDate{{i}}" #ltDate mode="dropdown" format="MM/dd/yyyy" mask="MM/dd/yyyy" [(ngModel)]="action.listCleanPointInfoDate">
+                                                        </igx-date-picker>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="mt-0 text-grey">
+                                                            Deviation Number:
+                                                        </label>
+                                                        <input maxlength="64" [disabled]="data.isCompleted || !isEditable" type="text" name="ltDeviationNumber{{i}}" [(ngModel)]="action.deviationNumber" class="form-control mb-2" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <h5>Containment Results</h5>
+                                            </div>
+                                            <div class="col-md-4 text-right">
+                                                <button *ngIf="(isEditable && !data.isCompleted)" data-toggle="modal" data-target="#containmentResultModal" type="button" class="btn btn-primary" style="margin-bottom: 10px;float: right;" (click)="addShortTermContResult('add', longTermActionType, i, action.id)">
+                                                    <i class="fa fa-plus"></i> Containment Result
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <div class="col-md-12">
+                                                <igx-grid #gridLTContainmentResult id="gridLTContainmentResult{{i}}" [data]="action.containmentResults" height="300px" width="100%" [allowFiltering]="false" [paging]="true" [perPage]="10" [primaryKey]="'id'" [rowEditable]="false">
+                                                    <igx-column width="100px" header="Action" [filterable]="false" *ngIf="(isEditable && !data.isCompleted)">
+                                                        <ng-template igxCell let-cell="cell">
+                                                            <button igxButton="icon" type="button" data-toggle="modal" data-target="#containmentResultModal" (click)="editContainmentAction(cell.cellID.rowIndex,longTermActionType,i,action.id)">
+                                                                <igx-icon>edit</igx-icon>
+                                                            </button>
+                                                        </ng-template>
+                                                    </igx-column>
+                                                    <igx-column #type field="sortLocation" header="Sort Location">
+                                                        <ng-template igxCell let-cell="cell">
+                                                            {{ getSortLocationName(cell.value) }}
+                                                        </ng-template>
+                                                    </igx-column>
+                                                    <igx-column [sortable]="false" field='locationDetails' header='Location Details' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'string'" width="350px">
+                                                        <ng-template igxCell let-cell="cell" let-location>
+                                                            <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                                {{location}}
+                                                            </p-scrollPanel>
+                                                        </ng-template>
+                                                    </igx-column>
+                                                    <igx-column [field]="'startDate'" header='Start Date' dataType="date" [sortable]="true">
+                                                        <ng-template igxCell let-cell="cell" let-val>
+                                                            {{val | date:'MM/dd/yyyy'}}
+                                                        </ng-template>
+                                                    </igx-column>
+                                                    <igx-column [field]="'endDate'" header='End Date' dataType="date" [sortable]="true">
+                                                        <ng-template igxCell let-cell="cell" let-val>
+                                                            {{val | date:'MM/dd/yyyy'}}
+                                                        </ng-template>
+                                                    </igx-column>
+                                                    <igx-column [sortable]="false" field='sorted' header='#Sorted' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'Number'" width="100px"></igx-column>
+                                                    <igx-column [sortable]="false" field='good' header='#Good' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'Number'" width="100px"></igx-column>
+                                                    <igx-column [sortable]="false" field='bad' header='#Bad' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'Number'" width="100px"></igx-column>
+                                                    <igx-column [sortable]="false" field='scrapped' header='#Scrapped' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'Number'" width="100px"></igx-column>
+                                                    <igx-column [sortable]="false" field='reworked' header='#Reworked' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'Number'" width="100px"></igx-column>
+                                                    <igx-column [sortable]="false" field='hours' header='#Hours' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'Number'" width="100px"></igx-column>
+                                                    <igx-column [sortable]="false" field='total' header='Total' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'Number'" width="100px"></igx-column>
+                                                    <igx-column [sortable]="false" field='responsibility' header='Responsibility' sortable="true" [filterCellTemplate]="defaultFilterTemplate" [dataType]="'string'" width="150px"></igx-column>
+                                                </igx-grid>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input type="checkbox" [disabled]="data.isCompleted || !isEditable" id="ltActionIsCompleted{{i}}" name="ltActionIsCompleted{{i}}" [(ngModel)]="action.isCompleted" #actionIsCompleted="ngModel" />
+                                                <label for="ltActionIsCompleted{{i}}">Close containment Action</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End - Long Term -->
+            <!-- End of Containment action as per CAPS -->
+
+            <!-- Start - Attachments -->
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Attachment
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="col-md-3" *ngIf="isEditable">
+                                    <label class="mb-0 text-grey">Browse:</label>
+                                </div>
+                                <div class="col-md-9" *ngIf="isEditable">
+                                    <p-fileUpload [disabled]="data.isCompleted || !isEditable" #form name="attachments" customUpload="true" (uploadHandler)="myUploader($event,form)" (onUpload)="onUpload($event)" (onBeforeSend)="onBeforeSend($event)" multiple="multiple" [maxFileSize]=fileUploadSize>
+                                        <ng-template pTemplate="content">
+                                            <div>
+                                                <ul *ngIf="uploadedFiles.length">
+                                                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </ng-template>
+                                    </p-fileUpload>
+                                </div>
+                                <div class="col-md-3 mt-2">
+                                    <label class="mb-0 text-grey">Attachments:</label>
+                                </div>
+                                <div class="col-md-9 mt-2">
+                                    <span>Count: {{fileCount}}</span>
+                                    <div class="file-list" *ngIf="fileCount!=0">
+                                        <p-scrollPanel [style]="{width: '100%', height: '100px'}">
+                                            <span *ngFor="let attachment of data.attachments">
+                                                <h5>{{attachment.name}}
+                                                    <a (click)="deleteAttachment(attachment.id)"><i *ngIf="isEditable && !data.isCompleted" class="fa fa-trash fa-3"></i></a>
+                                                    <a [href]="attachment.url" *ngIf="!isEditable" [download]="attachment.name" [target]="_blank" style="margin-left: 1px;">
+                                                        <i class="fa fa-download fa-3"></i></a>
+                                                </h5>
+                                            </span>
+                                        </p-scrollPanel>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- End - Attachments -->
+
+            <div class="row">
+                <div class="col-md-12 text-center mb-2" *ngIf="isEditable">
+                    <input type="checkbox" name="IsCompleted" [(ngModel)]="data.isCompleted" id="chkD3IsCompleted" />
+                    <label for="chkD3IsCompleted">Set this step to complete</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button type="button" class="btn btn-primary mr-2" (click)="redirectToStep('D2')">Previous</button>
+                    <button *ngIf="isEditable" type="submit" class="btn btn-primary mr-2">Save</button>
+                    <button type="button" class="btn btn-primary" (click)="redirectToStep('D4')">Next</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+</div>
+
+
+<div class="modal fade" id="containmentResultModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 1200px;">
+        <div class="modal-content" *ngIf="containmentResult">
+
+            <form #containmentResultForm="ngForm" id="containmentResultForm" (ngSubmit)="saveContainmentResult()" novalidate>
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Containment Result</h4>
+                    <button type="button" class="close" id='close' name='close' #close data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body" style="margin-left: 15px;margin-right: 25px;">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Sort Location:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <igx-select name="sortLocation" [(ngModel)]="containmentResult.sortLocation" #sortLocation="ngModel">
+                                        <label igxLabel>Select Sort Location</label>
+                                        <igx-select-item *ngFor="let location of data.sortLocations" [value]="location.id">
+                                            {{location.lookupValue}}
+                                        </igx-select-item>
+                                    </igx-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Location Details:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input maxlength="256" type="text" class="form-control" name="locationDetails" [(ngModel)]="containmentResult.locationDetails" #locationDetails="ngModel">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Start Date:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <igx-date-picker name="startDate" id="startDate" [(ngModel)]="containmentResult.startDate" #startDate mode="dropdown" format="MM/dd/yyyy" mask="MM/dd/yyyy">
+                                    </igx-date-picker>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="mb-0">End Date:</label>
+                                </div>
+                                <igx-date-picker name="endDate" id="endDate" [(ngModel)]="containmentResult.endDate" #endDate mode="dropdown" format="MM/dd/yyyy" mask="MM/dd/yyyy">
+                                </igx-date-picker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="mb-0">#Sorted</label>
+                                    <input type="number" class="form-control" name="sorted" [(ngModel)]="containmentResult.sorted" #sorted="ngModel">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="mb-0">#Good</label>
+                                    <input type="number" class="form-control" name="good" [(ngModel)]="containmentResult.good" #good="ngModel">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="mb-0">#Bad</label>
+                                    <input type="number" class="form-control" name="bad" [(ngModel)]="containmentResult.bad" #bad="ngModel">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="mb-0">#Scrapped</label>
+                                    <input type="number" class="form-control" name="scrapped" [(ngModel)]="containmentResult.scrapped" #scrapped="ngModel">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="mb-0">#Reworked</label>
+                                    <input type="number" class="form-control" name="reworked" [(ngModel)]="containmentResult.reworked" #reworked="ngModel">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="mb-0">#Hours</label>
+                                    <input type="number" class="form-control" name="hours" [(ngModel)]="containmentResult.hours" #hours="ngModel">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="mb-0">Total $</label>
+                                    <input type="number" class="form-control" name="total" [(ngModel)]="containmentResult.total" #total="ngModel">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="mb-0">Responsibility</label>
+                                    <input maxlength="256" type="text" class="form-control" name="responsibility" [(ngModel)]="containmentResult.responsibility" #responsibility="ngModel">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger pull-right" type="button" data-dismiss="modal"><i class="fa fa-times-circle mr-2"></i>Close</button>
+                    <button class="btn btn-primary pull-right" type="submit"><i class="fa fa-save mr-2"></i>Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

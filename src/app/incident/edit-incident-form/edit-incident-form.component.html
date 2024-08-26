@@ -1,0 +1,328 @@
+<div id="page-wrapper" *ngIf="incident && teams && products">
+    <div class="container-fluid">
+        <form #incidentForm="ngForm" id="incidentForm" (ngSubmit)="submit()" novalidate>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="mb-0"><b>Incident ID:</b></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{incident.incidentNumber}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="mb-0 "><b>Entered By:</b></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{incident.createdByUsername}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="mb-0 "><b>Date of Entry:</b></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{incident.createdOn | customDateFormat}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="mb-0 "><b>Last Modified:</b></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{incident.modifiedOn | customDateFormat}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Process
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="mb-0 ">Process<span class="mandatory-field">*</span>:</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <select required class="form-control" name="processId" [(ngModel)]="incident.processId" #processId="ngModel">
+                                                <option *ngFor="let process of processes" [ngValue]="process.id">
+                                                    {{process.name}}
+                                                </option>
+                                            </select>
+                                            <small class="text-danger" [hidden]="processOther.valid || processOther.untouched">Process other is required<br></small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row" [style.display]="incident.processId == -1 ? 'block' : 'none'">
+                                        <div class="col-md-4">
+                                            <label class="mb-0 ">Other<span class="mandatory-field">*</span>:</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" [required]="incident.processId==-1" InputValidationDirective="25" class="form-control" name="processOther" [(ngModel)]="incident.processOther" #processOther="ngModel">
+                                            <small class="text-danger" [hidden]="processOther.valid ||  processOther!=null || processOther.untouched">Process other is required<br></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Product
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="mb-0 text-grey">Product:</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <igx-combo #templateComboProduct [data]="products" name="product" [(ngModel)]="selectedProduct" displayKey="name" valueKey="id" (change)="changeProduct()">
+                                                <ng-template igxComboHeader>
+                                                    <div>
+                                                        <igx-checkbox class="igx-drop-down__item" [readonly]="true" [checked]="allSelectedProduct" (click)="handleSelectProduct($event)">Select All</igx-checkbox>
+                                                    </div>
+                                                </ng-template>
+                                            </igx-combo>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="mb-0 text-grey">System:</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <select class="form-control" name="systemId" [(ngModel)]="incident.systemId" #systemId="ngModel">
+                                                <option *ngFor="let system of systems" [ngValue]="system.id">
+                                                    {{system.lookupValue}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row" [style.display]="productOther == true ? 'block' : 'none'">
+                                        <div class="col-md-4">
+                                            <label class="mb-0 ">Other:</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" InputValidationDirective="25" class="form-control" name="productOther" [(ngModel)]="incident.productOther" #productOther="ngModel">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row" [style.display]="incident.systemId == -1 ? 'block' : 'none'">
+                                        <div class="col-md-4">
+                                            <label class="mb-0">Other:</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" InputValidationDirective="25" class="form-control" name="systemOther" [(ngModel)]="incident.systemOther" #systemOther="ngModel">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Issue
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row mb-2">
+                                <div class="col-md-7">
+                                    <div class="row mb-4">
+                                        <div class="col-md-3">
+                                            <label class="mb-0 text-grey">What<span class="mandatory-field">*</span>:</label>
+                                        </div>
+                                        <div class="col-md-8 embed-submit-field">
+                                            <textarea rows="5" required InputValidationDirective="500" class="form-control" name="issueWhat" [(ngModel)]="incident.issueWhat" #issueWhat="ngModel"></textarea>
+                                            <a data-toggle="modal" data-target="#whatModal" (click)="viewIncidentWhat()"><i class="fa fa-external-link"></i></a>
+                                            <small class="text-danger" [hidden]="issueWhat.valid || issueWhat.untouched">Issue what is required<br></small>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-3">
+                                            <label class="mb-0 text-grey">When<span class="mandatory-field">*</span>:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <igx-date-picker required name="issueWhen" id="issueWhen" #issueWhen mode="dropdown" format="MM/dd/yyyy" mask="MM/dd/yyyy" [(ngModel)]="incident.issueWhen">
+                                            </igx-date-picker>
+                                            <!-- <small class="text-danger" [hidden]="issueWhen.valid || issueWhen.untouched">Issue when is required<br></small> -->
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-3">
+                                            <label class="mb-0 text-grey">Where<span class="mandatory-field">*</span>:</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" required InputValidationDirective="250" class="form-control" required name="issueWhere" [(ngModel)]="incident.issueWhere" #issueWhere="ngModel">
+                                            <small class="text-danger" [hidden]="issueWhere.valid || issueWhere.untouched">Issue where is required<br></small>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-3">
+                                            <label class="mb-0 text-grey">How Many</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" InputValidationDirective="250" class="form-control" name="issueHowMany" [(ngModel)]="incident.issueHowMany" #issueHowMany="ngModel">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="mb-0 text-grey">Browse:</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <p-fileUpload [disabled]="attachmentStatus==true" #form name="demo[]" customUpload="true" (uploadHandler)="myUploader($event,form)" (onUpload)="onUpload($event)" (onBeforeSend)="onBeforeSend($event)" multiple="multiple" maxFileSize="1000000000">
+                                                <ng-template pTemplate="content">
+                                                    <div>
+                                                        <ul *ngIf="uploadedFiles.length">
+                                                            <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                                                        </ul>
+                                                    </div>
+                                                </ng-template>
+                                            </p-fileUpload>
+                                        </div>
+                                        <div class="col-md-3 mt-2">
+                                            <label class="mb-0 text-grey">Attachments:</label>
+                                        </div>
+                                        <div class="col-md-9 mt-2">
+                                            <span>Count: {{fileCount}}</span>
+                                            <div class="file-list" *ngIf="fileCount!=0">
+                                                <p-scrollPanel [style]="{width: '100%', height: '100px'}">
+                                                    <span *ngFor="let attachment of incidentAttachment">
+                                                        <h5>{{attachment.name}}<a (click)="deleteAttachment(attachment.id)"><i class="fa fa-trash fa-3"></i></a></h5>
+                                                    </span>
+                                                </p-scrollPanel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                Team
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="mb-0 text-grey">Select Team:</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <igx-combo [itemsMaxHeight]="165" #templateComboTeam [data]="teams" name="team" [(ngModel)]="selectedTeams" displayKey="name" valueKey="id">
+                                                <ng-template igxComboHeader>
+                                                    <div>
+                                                        <igx-checkbox class="igx-drop-down__item" [readonly]="true" [checked]="allSelectedTeam" (click)="handleSelectTeam($event)">Select All</igx-checkbox>
+                                                    </div>
+                                                </ng-template>
+                                            </igx-combo>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6" style="display: none;">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="mb-0 text-grey">Other:</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <textarea rows="5" class="form-control" name="affectedTeamOther" [(ngModel)]="incident.affectedTeamOther" #affectedTeamOther="ngModel"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="mb-0 text-grey">Additional Information</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <textarea rows="5" class="form-control" name="additionalInfo" [(ngModel)]="incident.additionalInfo" #additionalInfo="ngModel"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button type="button" class="btn btn-primary mr-2 mb-2" type="submit" [disabled]="!incidentForm.form.valid || this.incident.processId == 0">Save For Later</button>
+                        <button type="button" class="btn btn-primary mr-2 mb-2" [disabled]="!incidentForm.form.valid || this.incident.processId == 0" (click)="submitIncident()">Submit</button>
+                        <button type="button" class="btn btn-danger mb-2"><a style="color: white;" [routerLink]="['/home']">Close</a></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<div *ngIf="showWhatModal">
+    <div id="whatModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form #issueWhatForm="ngForm" id="issueWhatForm">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="exampleModalLabel">Issue What</h4>
+                        <button type="button" class="close" id='close' name='close' #close data-dismiss="modal">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <textarea maxlength="2048" name="issueWhat" [(ngModel)]="incident.issueWhat" #issueWhat="ngModel" rows="20" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger pull-right" type="button" data-dismiss="modal"><i class="fa fa-times-circle mr-2"></i>Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

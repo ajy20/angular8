@@ -1,0 +1,291 @@
+<div role="tabpanel" class="tab-pane active" id="RecognizeTeam" *ngIf="data">
+    <form #d8Form="ngForm" id="d8Form" (ngSubmit)="submit()" novalidate>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Closure With Issue Initiator
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label class="mb-0 text-grey">
+                                          Date Closed:
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{ data.dateClosed != null ? (data.dateClosed | date : short) : ''}}
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="mb-0 text-grey">
+                                          Issue Initiator:
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{ data.issueInitiator }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Additional comments for D8 - Recognize Team
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                Team Member:
+                            </div>
+                            <div class="col-md-3" *ngIf="isEditable && !data.isCompleted">
+                                <ng-autocomplete name="globalId" [(ngModel)]="newRecognizeTeamMember.globalId" #globalId="ngModel" placeHolder="Enter GlobalId or Name" [data]="results" [searchKeyword]="keyword" (inputChanged)="onChangeSearch($event)" (selected)="selectSearchEvent($event)"
+                                    (inputCleared)="inputClearSearch()" [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+                                </ng-autocomplete>
+                                <ng-template #itemTemplate let-item>
+                                    <a [innerHTML]="item.displayName"></a>
+                                    <a [innerHTML]="item.mail"></a>
+                                    <hr>
+                                </ng-template>
+                                <ng-template #notFoundTemplate let-notFound>
+                                    <div *ngIf="loadingGraphUserFlag">Loading...</div>
+                                    <div *ngIf="!loadingGraphUserFlag">Not Found</div>
+                                </ng-template>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-6">
+                                <div class="file-list" *ngIf="recognizeTeam">
+                                    <p-scrollPanel [style]="{width: '100%', height: '100px'}">
+                                        <span *ngFor="let member of recognizeTeam">
+                                          <h5>
+                                            {{member.name}} ({{member.globalId}})
+                                            <a (click)="deleteRecognizedTeamMember(member.id)"><i *ngIf="isEditable && !data.isCompleted" class="fa fa-trash fa-3"></i></a>
+                                          </h5>
+                                        </span>
+                                    </p-scrollPanel>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Attachment
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-3" *ngIf="isEditable">
+                                            <label class="mb-0 text-grey">Browse:</label>
+                                        </div>
+                                        <div class="col-md-9" *ngIf="isEditable">
+                                            <p-fileUpload [disabled]="data.isCompleted || !isEditable" #form name="demo[]" customUpload="true" (uploadHandler)="myUploader($event,form)" (onUpload)="onUpload($event)" (onBeforeSend)="onBeforeSend($event)" multiple="multiple" [maxFileSize]=fileUploadSize>
+                                                <ng-template pTemplate="content">
+                                                    <div>
+                                                        <ul *ngIf="uploadedFiles.length">
+                                                            <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                                                        </ul>
+                                                    </div>
+                                                </ng-template>
+                                            </p-fileUpload>
+                                        </div>
+                                        <div class="col-md-3 mt-2">
+                                            <label class="mb-0 text-grey">Attachments:</label>
+                                        </div>
+                                        <div class="col-md-9 mt-2">
+                                            <span>Count: {{fileCount}}</span>
+                                            <div class="file-list" *ngIf="fileCount!=0">
+                                                <p-scrollPanel [style]="{width: '100%', height: '100px'}">
+                                                    <span *ngFor="let attachment of attachments">
+                                                      <h5>
+                                                        {{attachment.name}}
+                                                        <a (click)="deleteAttachment(attachment.id)"><i *ngIf="isEditable && !data.isCompleted" class="fa fa-trash fa-3"></i></a>
+                                                        <a [href]="attachment.url" *ngIf="!isEditable" [download]="attachment.name" [target]="_blank" style="margin-left: 1px;"><i class="fa fa-download fa-3"></i></a>
+                                                      </h5>
+                                                    </span>
+                                                </p-scrollPanel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-12 text-center">
+                    <button type="button" class="btn btn-primary mr-2" (click)="redirectToStep('D7')">Previous</button>
+                    <button type="button" class="btn btn-primary mr-2" (click)="runFinalVerificationCheck()" *ngIf="!isApprovalCompleted && isEditable">Run Final Verification Check</button>
+                    <button type="button" class="btn btn-primary" *ngIf="(!isApprovalRequestSent || isApprovalCompletedWithReject) && !isApprovalCompleted && isEditable" [disabled]="!isFinalVerificationCheckCompleted" (click)="saveAndMakeApprovalRequest()">Send Approval Request</button>
+                    <button type="button" class="btn btn-warning" *ngIf="isApprovalRequestSent && !isApprovalCompletedWithReject && !isApprovalCompleted && isEditable" (click)="cancelApprovalRequest()">Cancel Approval Request</button>
+                </div>
+            </div>
+            <div class="row" *ngIf="hasErrorsInFinalVerificationCheck">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div *ngFor="let x of finalVerificationCheckResult">
+                                    <a (click)="redirectToStep(x.step)">{{ x.step }} - {{ x.stepName }}: </a>
+                                    <span class="text-danger">{{ x.message }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" *ngIf="isFinalVerificationCheckCompleted">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="alert alert-success" role="alert" style="margin-bottom:0px">
+                                    <i class="fa fa-info-circle"></i> Well Done! Final verification check is completed with no errors.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3 mt-4" *ngIf="isApprovalRequestSent">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    CLOSURE APPROVAL
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row mb-2">
+                                            <div class="col-md-12 mb-2" *ngIf="isApprovalRequestSent">
+                                                <h5>Current Approval Status</h5>
+                                                <igx-grid #approverStatus [data]="data.approverStatuses" height="300px" width="100%" [allowFiltering]="false" [paging]="true" [perPage]="10">
+                                                    <igx-column field="approverName" header="Approver Name" sortable="false"></igx-column>
+                                                    <igx-column field="comments" header="Comments" sortable="false">
+                                                        <ng-template igxCell let-cell="cell" let-comments>
+                                                            <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                                {{comments}}
+                                                            </p-scrollPanel>
+                                                        </ng-template>
+                                                    </igx-column>
+                                                    <igx-column field="id" header="Status" sortable="false">
+                                                        <ng-template igxCell let-cell="cell">
+                                                            {{ getStatusText(cell.value) }}
+                                                        </ng-template>
+                                                    </igx-column>
+                                                </igx-grid>
+                                            </div>
+                                            <div class="col-mg-12" *ngIf="amIApprover">
+                                                <div class="col-md-12 text-center">
+                                                    <button data-toggle="modal" data-target="#approveRejectCommentsModal" type="button" class="btn btn-success mr-2" (click)="setApprovalAction(approveD8Status)">Approve</button>
+                                                    <button data-toggle="modal" data-target="#approveRejectCommentsModal" type="button" class="btn btn-danger" (click)="setApprovalAction(rejectD8Status)">Reject</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4" *ngIf="hasApprovalHistory">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Approval History
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel-group" *ngFor="let history of data.approverHistory; let i = index">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" href="#approverHistory{{i}}" style="text-decoration: none">
+                                                    <span class="fa fa-plus"></span> Requested On: {{localizeDateStr(history.requestedOn)}}
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="approverHistory{{i}}" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <igx-grid #approverHistory [data]="history.approvers" height="200px" width="100%" [allowFiltering]="false" [paging]="true" [perPage]="10">
+                                                            <igx-column field="approverName" header="Approver Name" sortable="false"></igx-column>
+                                                            <igx-column field="comments" header="Comments" sortable="false">
+                                                                <ng-template igxCell let-cell="cell" let-comments>
+                                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                                        {{comments}}
+                                                                    </p-scrollPanel>
+                                                                </ng-template>
+                                                            </igx-column>
+                                                            <igx-column field="id" header="Status" sortable="false">
+                                                                <ng-template igxCell let-cell="cell">
+                                                                    {{ getHistoryStatusText(history.approvers, cell.value) }}
+                                                                </ng-template>
+                                                            </igx-column>
+                                                        </igx-grid>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Approve / reject Comments -->
+<div id="approveRejectCommentsModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form #approvalCommentsForm="ngForm" id="approvalCommentsForm">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">{{approveRejectModalConfirmMessage}}</h4>
+                    <button type="button" class="close" id='close' name='close' #close data-dismiss="modal" (click)="resetApprovalAction()">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <h5>Comments: </h5>
+                            <textarea maxlength="1024" name="approvalComments" [(ngModel)]="approvalComments" #approvalCommentsModal="ngModel" rows="10" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer text-right">
+                    <button class="btn btn-primary" type="button" data-dismiss="modal" (click)="approveRejectRequest()" [disabled]="!approvalComments"><i class="fa fa-check mr-2"></i>Yes</button>
+                    <button class="btn btn-danger" type="button" data-dismiss="modal" (click)="resetApprovalAction()"><i class="fa fa-times mr-2"></i>No</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,327 @@
+<div id="page-wrapper" *ngIf="incident">
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="col-md-12 text-right" style="text-align:right;margin-top: 5px;">
+                <button type="button" *ngIf="editBtn == true" class="btn btn-primary mr-2" data-toggle="modal" data-target="#commentModal" (click)="editIncidentForm()"><a style="color: white;"><i class="fa fa-edit fa-3"></i></a></button>
+
+                <button type="button" *ngIf="incident.decisionId == editIncidentDecisionVal" class="btn btn-primary" (click)="view8dForm()">
+                    <a style="color: white;">
+                        <i style="color: white;" class="fa fa-eye fa-3"></i> 8D Form
+                    </a>
+                </button>
+            </div>
+            <div class="panel-body" style="margin-top: 30px;">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row mb-2">
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="mb-0"><b>Incident ID:</b></label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{incident.incidentNumber}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="mb-0 "><b>Entered By:</b></label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{incident.createdByUsername}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="mb-0 "><b>Date of Entry:</b></label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{incident.createdOn | customDateFormat }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="mb-0 "><b>Last Modified:</b></label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{incident.modifiedOn | customDateFormat }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="mb-0"><b>Decision:</b></label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{incident.decisionName}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="mb-0 "><b>Status:</b></label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{incident.statusName}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <label class="mb-0 "><b>Comments:</b></label>
+                                    </div>
+                                    <div class="col-md-11">
+                                        {{incident.comments}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Process
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="mb-0" style="margin-top: -4px;">Process</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{incident.processName}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Product
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="mb-0 text-grey" style="margin-top: -4px;">Product</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <p-scrollPanel [style]="{width: '100%', height: '79px'}">
+                                            {{incident.productNames}}
+                                        </p-scrollPanel>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="mb-0 text-grey">System:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{incident.systemName}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Issue
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row mb-4">
+                                    <div class="col-md-3">
+                                        <label class="mb-0 text-grey" style="margin-top: -4px;">What</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{incident.issueWhat}}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-3">
+                                        <label class="mb-0 text-grey" style="margin-top: -4px;">When</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{incident.issueWhen | customDateFormat }}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-3">
+                                        <label class="mb-0 text-grey" style="margin-top: -4px;">Where</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{incident.issueWhere}}
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-3">
+                                        <label class="mb-0 text-grey" style="margin-top: -4px;">How Many:</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        {{incident.issueHowMany}}
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <div class="col-md-12">
+                                    <label class="mb-0 text-grey" style="margin-top: -4px;">Files Attached: {{fileCount}}</label>
+                                    <div class="file-list" *ngIf="fileCount!=0">
+                                        <p-scrollPanel [style]="{width: '100%', height: '130px'}">
+                                            <span *ngFor="let attachment of incidentAttachment">
+                                                <h5>{{attachment.name}}<a [href]="attachment.url" [download]="attachment.name" [target]="_blank" style="margin-left: 1px;"><i class="fa fa-download fa-3"></i></a></h5>
+                                            </span>
+                                        </p-scrollPanel>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Team
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="mb-0 text-grey">Select Team:</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{incident.affectedTeamNames}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label class="mb-0 text-grey">Additional Information</label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        {{incident.additionalInfo}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <a class="btn btn-danger mb-2" [routerLink]="['/home']"> Close</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="panel-body">
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" href="#commentHistory" style="text-decoration: none" (click)="viewComment()">
+                        <span [ngClass]="(commentView==true)?'fa fa-minus mr-2':'fa fa-plus mr-2'"></span> Incident Edit History
+                    </a>
+                </h4>
+            </div>
+            <div id="commentHistory" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="comments" *ngIf="incidentEditHistory">
+                            <article class="comment" *ngFor="let comment of incidentEditHistory">
+                                <a class="comment-img" href="#non">
+                                    <img src="" alt="" width="13" height="30">
+                                </a>
+                                <div class="comment-body">
+                                    <div class="text">
+                                        <span class="attribution-header">{{comment.createdByUsername}} at {{localizeDateStr(comment.createdOn)}}</span> <span class="attribution">{{comment.reason}}</span>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div *ngIf="!incidentEditHistory">
+                            <span> 
+                                No Edit History found for this incident.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="showCommentModal">
+    <div id="commentModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content" *ngIf="incident">
+                <form #commentForm="ngForm" id="commentForm" (ngSubmit)="submit()" novalidate>
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="exampleModalLabel">Edit Incident Form</h4>
+                        <button type="button" class="close" id='close' name='close' #close data-dismiss="modal">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <label class="mb-0">Reason:</label>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <textarea style="white-space: pre-wrap;" required InputValidationDirective="250" name="reason" [(ngModel)]="incident.editReason" #reason="ngModel" rows="2" class="form-control"></textarea>
+                                <small class="text-danger" [hidden]="reason.valid || reason.untouched">Reason is required <br></small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-danger pull-right" type="button" data-dismiss="modal"><i
+                                class="fa fa-times-circle mr-2"></i>Close</button>
+                        <button class="btn btn-primary pull-right" type="submit" [disabled]="!commentForm.form.valid"><i
+                                class="fa fa-save mr-2"></i>Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

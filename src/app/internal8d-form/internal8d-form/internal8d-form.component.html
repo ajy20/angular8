@@ -1,0 +1,66 @@
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <app-internal-form-tabs></app-internal-form-tabs>
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="nav nav-tabs nav-justified" role="tablist" *ngIf="internal8D" id='internal8dTab' name='internal8dTab' #internal8dTab>
+                    <li role="presentation" id="d1Tab">
+                        <a (click)="redirectStep('D1')" aria-controls="establishTeam" role="tab" data-toggle="tab">
+                            <h2>D1<i *ngIf="internal8D.isD1Completed" class="fa fa-check tick-mark"></i> </h2>
+                            <p>Establish<br /> Team</p>
+                        </a>
+                    </li>
+                    <li role="presentation" id="d2Tab">
+                        <a (click)="redirectStep('D2')" aria-controls="describeProblem" role="tab" data-toggle="tab">
+                            <h2>D2<i *ngIf="internal8D.isD2Completed" class="fa fa-check tick-mark"></i> </h2>
+                            <p>Describe<br /> Problem</p>
+                        </a>
+                    </li>
+                    <li role="presentation" id="d3Tab">
+                        <a (click)="redirectStep('D3')" aria-controls="messages" role="tab" data-toggle="tab">
+                            <h2>D3<i *ngIf="internal8D.isD3Completed" class="fa fa-check tick-mark"></i> </h2>
+                            <p>Contain<br /> Symptoms</p>
+                        </a>
+                    </li>
+                    <li role="presentation" id="d4Tab">
+                        <a (click)="redirectStep('D4')" aria-controls="settings" role="tab" data-toggle="tab">
+                            <h2>D4 <i *ngIf="internal8D.isD4Completed" class="fa fa-check tick-mark"></i></h2>
+                            <p>Find Root<br /> Cause</p>
+                        </a>
+                    </li>
+                    <li role="presentation" id="d5Tab">
+                        <a (click)="redirectStep('D5')" aria-controls="settings" role="tab" data-toggle="tab">
+                            <h2>D5<i *ngIf="internal8D.isD5Completed" class="fa fa-check tick-mark"></i> </h2>
+                            <p>Select &<br /> Verify CA</p>
+                        </a>
+                    </li>
+                    <li role="presentation" id="d6Tab">
+                        <a (click)="validateStep('D6')" aria-controls="settings" role="tab" data-toggle="tab">
+                            <h2>D6<i *ngIf="internal8D.isD6Completed" class="fa fa-check tick-mark"></i> </h2>
+                            <p>Implement &<br /> Validate CA</p>
+                        </a>
+                    </li>
+                    <li role="presentation" id="d7Tab">
+                        <a (click)="validateStep('D7')" aria-controls="settings" role="tab" data-toggle="tab">
+                            <h2>D7 <i *ngIf="internal8D.isD7Completed" class="fa fa-check tick-mark"></i></h2>
+                            <p>Prevent<br /> Recurrence</p>
+                        </a>
+                    </li>
+                    <li role="presentation" id="d8Tab">
+                        <a (click)="validateStep('D8')" aria-controls="settings" role="tab" data-toggle="tab">
+                            <h2>D8 <i *ngIf="internal8D.isD8Completed" class="fa fa-check tick-mark"></i></h2>
+                            <p>Recognize<br /> Team</p>
+                        </a>
+                    </li>
+                </ul>
+
+
+                <div class="tab-content">
+                    <router-outlet></router-outlet>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

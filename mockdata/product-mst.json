@@ -1,0 +1,79 @@
+{
+    "productMst": [{
+            "id": 10,
+            "name": "Refrigeration"
+        },
+        {
+            "id": 11,
+            "name": "TURBO-REFR SYS"
+        },
+        {
+            "id": 12,
+            "name": "YORK ABS WUXI"
+        }
+    ],
+    "teamMst": [{
+            "id": 15,
+            "name": "Compressor Engg"
+        },
+        {
+            "id": 16,
+            "name": "Screw Chiller Engg"
+        },
+        {
+            "id": 17,
+            "name": "Plant Quality"
+        },
+        {
+            "id": 18,
+            "name": "Manufacturing"
+        }
+    ],
+    "userMst": [{
+        "id": 20,
+        "name": "Ajay Pawar",
+        "globalId": "jpawaraj",
+        "emailId": "ajay.pawar-ext@jci.com",
+        "role": "Approver"
+    }, {
+        "id": 21,
+        "name": "Dipesh Sawant",
+        "globalId": "dsawant",
+        "emailId": "dipesh.sawant-ext@jci.com",
+        "role": "User"
+    }, {
+        "id": 22,
+        "name": "Ganesh Ingle",
+        "globalId": "cingalg",
+        "emailId": "ganesh.ingle-ext@jci.com",
+        "role": "User"
+    }, {
+        "id": 23,
+        "name": "Ajay Pawar",
+        "globalId": "jpawaraj",
+        "emailId": "ajay.pawar-ext@jci.com",
+        "role": "Approver"
+    }, {
+        "id": 24,
+        "name": "Prathamesh Patil",
+        "globalId": "dsawant",
+        "emailId": "dipesh.sawant-ext@jci.com",
+        "role": "User"
+    }, {
+        "id": 25,
+        "name": "Pradip Kodam",
+        "globalId": "cingalg",
+        "emailId": "ganesh.ingle-ext@jci.com",
+        "role": "User"
+    }],
+    "roles": [{
+            "id": 20,
+            "name": "Approver"
+        },
+        {
+            "id": 21,
+            "name": "User"
+        }
+    ]
+
+}

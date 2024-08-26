@@ -1,0 +1,63 @@
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row mb-2" *ngIf="isEditable">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label class="mb-0 text-grey">Browse Attachments:</label>
+                            </div>
+                            <div class="col-md-9">
+                                <!-- Max file size for primeng is always provided in Bytes -->
+                                <p-fileUpload #form name="demo[]" customUpload="true" (uploadHandler)="myUploader($event,form)" (onUpload)="onUpload($event)" (onBeforeSend)="onBeforeSend($event)" multiple="multiple" [maxFileSize]=fileUploadSize>
+                                    <ng-template pTemplate="content">
+                                        <div>
+                                            <ul *ngIf="uploadedFiles.length">
+                                                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                                            </ul>
+                                        </div>
+                                    </ng-template>
+                                </p-fileUpload>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                            </div>
+                            <div class="col-md-9">
+                                <label class="mb-0 text-grey">Maximum file limit is 250 MB.</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row toolkit-grid mt-4">
+                    <div class="col-md-12 text-center">
+                        <igx-grid #grid1 [data]="toolkitAttachment" height="500px" width="100%" [allowFiltering]="false" [paging]="true" [perPage]="10" [primaryKey]="'id'">
+                            <igx-column field="id" header="Name" sortable="true" [dataType]="'string'" width="600px">
+                                <ng-template igxCell let-cell="cell" let-id>
+                                    <a (click)="downloadAttachment(cell.rowIndex)">{{ getFileName(cell.value) }}</a>
+                                </ng-template>
+                            </igx-column>
+                            <igx-column field="createdByUsername" header="Uploaded By" sortable="true" [dataType]="'string'" width="400px"></igx-column>
+                            <igx-column field="createdOn" header="Uploaded On" sortable="true" [dataType]="'string'">
+                                <ng-template igxCell let-cell="cell" let-val>
+                                    {{val | date:'MM/dd/yyyy'}}
+                                </ng-template>
+                            </igx-column>
+                            <igx-column field="size" header="Size" sortable="true" [dataType]="'string'">
+                                <ng-template igxCell let-cell="cell" let-size>
+                                    {{size | filesize}}
+                                </ng-template>
+                            </igx-column>
+                            <igx-column *ngIf="isEditable" field="id" header="Action">
+                                <ng-template igxCell let-cell="cell" let-val>
+                                    <a style="cursor: pointer; margin-left: 10px;" (click)="deleteAttachment(val)"><i class="fa fa-trash fa-3"></i></a>
+                                </ng-template>
+                            </igx-column>
+                        </igx-grid>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+<div id="wrapper" [ngClass]="{'toggled': sidebarStatus == true}">
+    <ngx-spinner bdColor="rgba(0,0,0,0.6)" size="medium" color="#fffff" type="ball-spin-clockwise" [fullScreen]="true"></ngx-spinner>
+    <app-header (leftNavStatus)='sidebarClick($event)'></app-header>
+    <p-toast position="top-right" [style]="{marginTop: '80px'}"></p-toast>
+    <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
+    <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,589 @@
+<div role="tabpanel" class="tab-pane" id="settings" *ngIf="d4StepDetails">
+    <p class="alert alert-info font-weight-bold">
+        Identify all possible causes(s) which could explain why the problem occured. Isolate and verify the root causes(s) by testing wach possible cause against the problem description and test data. List possible corrective action to eliminate root causes(s).
+        Use Fish Bone, 5 Why tools to identify root cause
+    </p>
+    <form #d4Form="ngForm" id="d4Form" (ngSubmit)="submit()" novalidate (change)="formIsDirty()">
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label class="mb-0 text-grey">Why Made:</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <textarea maxlength="1024" rows="2" [disabled]="d4StepDetails.isD4Completed || !isEditable" type="text" class="form-control" name="d4WhyMade" [(ngModel)]="d4StepDetails.d4WhyMade" #d4WhyMade="ngModel"></textarea>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="mb-0 text-grey">How Verified:</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <textarea maxlength="1024" rows="2" [disabled]="d4StepDetails.isD4Completed || !isEditable" type="text" class="form-control" name="d4HowVerified" [(ngModel)]="d4StepDetails.d4HowVerified" #d4HowVerified="ngModel"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row mb-2">
+                                    <div class="col-md-3">
+                                        <label class="mb-0 text-grey">Identification of contained parts:</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <textarea maxlength="1024" rows="2" [disabled]="d4StepDetails.isD4Completed || !isEditable" type="text" class="form-control" name="d4Identification" [(ngModel)]="d4StepDetails.d4Identification" #d4Identification="ngModel"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Step 1 - Lessons Learned Investigation
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row mb-2">
+                                    <div class="col-md-12">
+                                        <button *ngIf="(!d4StepDetails.isD4Completed && isEditable)" class="btn btn-primary mb-2" type="button" data-toggle="modal" data-target="#addPotentialCauseModal" (click)="addPotentialCause(1)" style="margin-bottom: 10px;float: right;">
+                                            <i class="fa fa-plus"></i> Potential Causes</button>
+                                        <igx-grid #subStep1 [data]="d4StepDetails.subStep1" height="300px" width="100%" [allowFiltering]="false" [paging]="true" [perPage]="10">
+                                            <igx-column width="100px" field="id" header="Action" [filterable]="false" *ngIf="(!d4StepDetails.isD4Completed && isEditable)">
+                                                <ng-template igxCell let-cell="cell">
+                                                    <button igxButton="icon" type="button" data-toggle="modal" data-target="#addPotentialCauseModal" (click)="editPotentialCause(1, cell.value, cell.cellID.rowIndex)">
+                                                        <igx-icon>edit</igx-icon>
+                                                    </button>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="typeName" header="Type" sortable="true"></igx-column>
+                                            <igx-column field="causeDescription" header="Potential Cause" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-description>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{description}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="sourceName" header="Source" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-source>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{source}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="causeTypeName" header="Cause Type" sortable="true"></igx-column>
+                                            <igx-column field="d4ExplainsIsOrIsNot" header="Explains Is/Is Not?" sortable="true">
+                                                <ng-template igxCell let-cell="cell">
+                                                    <span *ngIf="cell.value==true">Yes</span>
+                                                    <span *ngIf="cell.value==false">No</span>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="d4HowConfirmed" header="How Confirmed?" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-howConfirmed>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{howConfirmed}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="additionalNotes" header="Additional Notes" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-notes>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{notes}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="d4IsProbableRootCause" header="Probable Root Cause?" sortable="true">
+                                                <ng-template igxCell let-cell="cell">
+                                                    <span *ngIf="cell.value==true">Yes</span>
+                                                    <span *ngIf="cell.value==false">No</span>
+                                                </ng-template>
+                                            </igx-column>
+                                        </igx-grid>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Step 2 - Occurrence
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row" style="margin-left: 2px;">
+                                    <h4 class="panel-title">
+                                        5 Why
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top: 25px;">
+                                <div class="row mb-2">
+                                    <div class="col-md-12" style="margin-top: 30px;">
+                                        <div class="five-whys-container">
+                                            <ul class="five-whys no-list">
+                                                <li class="form-group" *ngFor="let occuranceWhy of d4StepDetails.occurenceFiveWhy;let index = index" [style.padding-left.px]="[30]" [style.margin-left.px]="[index * 30 - 30]">
+                                                    <span class="glyphicon glyphicon-share-alt"></span>
+                                                    <input [disabled]="d4StepDetails.isD4Completed || !isEditable" class="fivewhy-control" type="text" name="name{{index}}" [(ngModel)]="d4StepDetails.occurenceFiveWhy[index].whyQuestion">
+                                                </li>
+                                            </ul>
+                                            <button *ngIf="(!d4StepDetails.isD4Completed && isEditable)" type="button" class="btn btn-primary" style="margin-left:10px;position:absolute;bottom:17px;" (click)="addFiveWhy('occurence')">+ Why?</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row" style="margin-left: 2px; margin-top: 45px;">
+                                    <h4 class="panel-title">
+                                        Potential Root Causes - Occurrence
+                                    </h4>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-12">
+                                        <button *ngIf="(!d4StepDetails.isD4Completed && isEditable)" class="btn btn-primary mb-2" type="button" data-toggle="modal" data-target="#addPotentialCauseModal" (click)="addPotentialCause(2)" style="margin-bottom: 10px;float: right;">
+                                            <i class="fa fa-plus"></i> Potential Causes</button>
+                                        <igx-grid #subStep2 [data]="d4StepDetails.subStep2" height="300px" width="100%" [allowFiltering]="false" [paging]="true" [perPage]="10">
+                                            <igx-column width="100px" field="id" header="Action" [filterable]="false" *ngIf="(!d4StepDetails.isD4Completed && isEditable)">
+                                                <ng-template igxCell let-cell="cell">
+                                                    <button igxButton="icon" type="button" data-toggle="modal" data-target="#addPotentialCauseModal" (click)="editPotentialCause(2, cell.value, cell.cellID.rowIndex)">
+                                                        <igx-icon>edit</igx-icon>
+                                                    </button>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="typeName" header="Type" sortable="true"></igx-column>
+                                            <igx-column field="causeDescription" header="Potential Cause" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-description>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{description}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="sourceName" header="Source" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-source>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{source}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="causeTypeName" header="Cause Type" sortable="true">
+                                            </igx-column>
+                                            <igx-column field="d4ExplainsIsOrIsNot" header="Explains Is/Is Not?" sortable="true">
+                                                <ng-template igxCell let-cell="cell">
+                                                    <span *ngIf="cell.value==true">Yes</span>
+                                                    <span *ngIf="cell.value==false">No</span>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="d4HowConfirmed" header="How Confirmed?" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-howConfirmed>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{howConfirmed}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="additionalNotes" header="Additional Notes" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-notes>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{notes}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="d4IsProbableRootCause" header="Probable Root Cause?" sortable="true">
+                                                <ng-template igxCell let-cell="cell">
+                                                    <span *ngIf="cell.value==true">Yes</span>
+                                                    <span *ngIf="cell.value==false">No</span>
+                                                </ng-template>
+                                            </igx-column>
+                                        </igx-grid>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Step 3 - Detection
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row" style="margin-left: 2px;">
+                                    <h4 class="panel-title">
+                                        5 Why
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-top: 25px;">
+                                <div class="row mb-2">
+                                    <div class="col-md-12" style="margin-top: 30px;">
+                                        <div class="five-whys-container">
+                                            <ul class="five-whys no-list">
+                                                <li class="form-group" *ngFor="let detectionWhy of d4StepDetails.detectionFiveWhy;let i = index" [style.padding-left.px]="[30]" [style.margin-left.px]="[i * 30 - 30]">
+                                                    <span class="glyphicon glyphicon-share-alt"></span>
+                                                    <input [disabled]="d4StepDetails.isD4Completed || !isEditable" class="fivewhy-control" type="text" name="name--{{i}}" [(ngModel)]="d4StepDetails.detectionFiveWhy[i].whyQuestion">
+                                                </li>
+                                            </ul>
+                                            <button *ngIf="(!d4StepDetails.isD4Completed && isEditable)" type="button" class="btn btn-primary" style="margin-left:10px;position:absolute;bottom:17px;" (click)="addFiveWhy('detection')">+ Why?</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row" style="margin-left: 2px; margin-top: 45px;">
+                                    <h4 class="panel-title">
+                                        Potential Root Causes - Detection
+                                    </h4>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-md-12">
+                                        <button *ngIf="(!d4StepDetails.isD4Completed && isEditable)" class="btn btn-primary mb-2" type="button" data-toggle="modal" data-target="#addPotentialCauseModal" (click)="addPotentialCause(3)" style="margin-bottom: 10px;float: right;">
+                                            <i class="fa fa-plus"></i> Potential Causes</button>
+                                        <igx-grid #subStep3 [data]="d4StepDetails.subStep3" height="300px" width="100%" [allowFiltering]="false" [paging]="true" [perPage]="10">
+                                            <igx-column width="100px" field="id" header="Action" [filterable]="false" *ngIf="(!d4StepDetails.isD4Completed && isEditable)">
+                                                <ng-template igxCell let-cell="cell">
+                                                    <button igxButton="icon" type="button" data-toggle="modal" data-target="#addPotentialCauseModal" (click)="editPotentialCause(3, cell.value, cell.cellID.rowIndex)">
+                                                        <igx-icon>edit</igx-icon>
+                                                    </button>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="typeName" header="Type" sortable="true"></igx-column>
+                                            <igx-column field="causeDescription" header="Potential Cause" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-description>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{description}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="sourceName" header="Source" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-source>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{source}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="causeTypeName" header="Cause Type" sortable="true"></igx-column>
+                                            <igx-column field="d4ExplainsIsOrIsNot" header="Explains Is/Is Not?" sortable="true">
+                                                <ng-template igxCell let-cell="cell">
+                                                    <span *ngIf="cell.value==true">Yes</span>
+                                                    <span *ngIf="cell.value==false">No</span>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="d4HowConfirmed" header="How Confirmed?" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-howConfirmed>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{howConfirmed}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="additionalNotes" header="Additional Notes" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-notes>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{notes}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="d4IsProbableRootCause" header="Probable Root Cause?" sortable="true">
+                                                <ng-template igxCell let-cell="cell">
+                                                    <span *ngIf="cell.value==true">Yes</span>
+                                                    <span *ngIf="cell.value==false">No</span>
+                                                </ng-template>
+                                            </igx-column>
+                                        </igx-grid>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Step 4 - Summary
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row mb-2">
+                                    <div class="col-md-12">
+                                        <igx-grid #grid1 [data]="summary" height="300px" width="100%" [allowFiltering]="false" [paging]="true" [perPage]="10">
+                                            <igx-column field="typeName" header="Type" sortable="true"></igx-column>
+                                            <igx-column field="causeDescription" header="Potential Cause" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-description>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{description}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="sourceName" header="Source" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-source>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{source}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="causeTypeName" header="Cause Type" sortable="true"></igx-column>
+                                            <igx-column field="d4ExplainsIsOrIsNot" header="Explains Is/Is Not?" sortable="true">
+                                                <ng-template igxCell let-cell="cell">
+                                                    <span *ngIf="cell.value==true">Yes</span>
+                                                    <span *ngIf="cell.value==false">No</span>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="d4HowConfirmed" header="How Confirmed?" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-howConfirmed>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{howConfirmed}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="additionalNotes" header="Additional Notes" sortable="true">
+                                                <ng-template igxCell let-cell="cell" let-notes>
+                                                    <p-scrollPanel [style]="{width: '100%', height: '50px', padding: '5px 0px'}">
+                                                        {{notes}}
+                                                    </p-scrollPanel>
+                                                </ng-template>
+                                            </igx-column>
+                                            <igx-column field="d4IsProbableRootCause" header="Probable Root Cause?" sortable="true">
+                                                <ng-template igxCell let-cell="cell">
+                                                    <span *ngIf="cell.value==true">Yes</span>
+                                                    <span *ngIf="cell.value==false">No</span>
+                                                </ng-template>
+                                            </igx-column>
+                                        </igx-grid>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Attachment
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-3" *ngIf="isEditable">
+                                            <label class="mb-0 text-grey">Browse:</label>
+                                        </div>
+                                        <div class="col-md-9" *ngIf="isEditable">
+                                            <p-fileUpload [disabled]="d4StepDetails.isD4Completed || !isEditable" #form name="demo[]" customUpload="true" (uploadHandler)="myUploader($event,form)" (onUpload)="onUpload($event)" (onBeforeSend)="onBeforeSend($event)" multiple="multiple" [maxFileSize]=fileUploadSize>
+                                                <ng-template pTemplate="content">
+                                                    <div>
+                                                        <ul *ngIf="uploadedFiles.length">
+                                                            <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                                                        </ul>
+                                                    </div>
+                                                </ng-template>
+                                            </p-fileUpload>
+                                        </div>
+                                        <div class="col-md-3 mt-2">
+                                            <label class="mb-0 text-grey">Attachments:</label>
+                                        </div>
+                                        <div class="col-md-9 mt-2">
+                                            <span>Count: {{fileCount}}</span>
+                                            <div class="file-list" *ngIf="fileCount!=0">
+                                                <p-scrollPanel [style]="{width: '100%', height: '100px'}">
+                                                    <span *ngFor="let attachment of d4StepAttachment">
+                                                        <h5>{{attachment.name}}
+                                                            <a (click)="deleteAttachment(attachment.id)"><i *ngIf="isEditable && !d4StepDetails.isD4Completed" class="fa fa-trash fa-3"></i></a>
+                                                            <a [href]="attachment.url" *ngIf="!isEditable" [download]="attachment.name" [target]="_blank" style="margin-left: 1px;"><i class="fa fa-download fa-3"></i></a>
+                                                        </h5>
+                                                    </span>
+                                                </p-scrollPanel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 text-center mb-2" *ngIf="isEditable">
+                    <input name="isD4Completed" [(ngModel)]="d4StepDetails.isD4Completed" #isD4Completed="ngModel" type="checkbox" />
+                    <label for="chkD2IsCompleted">Set this step to complete</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button type="button" class="btn btn-primary mr-2" (click)="redirectToStep('D3')">Previous</button>
+                    <button type="button" class="btn btn-primary mr-2" type="submit" *ngIf="isEditable" [disabled]="!d4Form.form.valid">Save</button>
+                    <button type="button" class="btn btn-primary" (click)="redirectToStep('D5')">Next</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<div class="modal fade" id="addPotentialCauseModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="width: 1200px;">
+        <div class="modal-content" *ngIf="potentialCauseModal">
+
+            <form #containmentResultForm="ngForm" id="containmentResultForm" (ngSubmit)="savePotentialCause()" novalidate>
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Potential Causes</h4>
+                    <button type="button" class="close" id='close' name='close' #close data-dismiss="modal" (click)="closeModal()">×</button>
+                </div>
+                <div class="modal-body" style="margin-left: 15px;margin-right: 25px;">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Type</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <igx-select name="typeId" [(ngModel)]="potentialCauseModal.typeId" #typeId="ngModel">
+                                        <label igxLabel>Select Type</label>
+                                        <igx-select-item *ngFor="let type of typeLst" [value]="type.id">
+                                            {{type.lookupValue}}
+                                        </igx-select-item>
+                                    </igx-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Potential Cause</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input maxlength="128" type="text" class="form-control" name="causeDescription" [(ngModel)]="potentialCauseModal.causeDescription" #causeDescription="ngModel">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Source</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <igx-select name="sourceId" [(ngModel)]="potentialCauseModal.sourceId" #sourceId="ngModel">
+                                        <label igxLabel>Select Source</label>
+                                        <igx-select-item *ngFor="let source of sourceLst" [value]="source.id">
+                                            {{source.lookupValue}}
+                                        </igx-select-item>
+                                    </igx-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Cause Type</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <igx-select name="causeTypeId" [(ngModel)]="potentialCauseModal.causeTypeId" #causeTypeId="ngModel">
+                                        <label igxLabel>Select Cause Type</label>
+                                        <igx-select-item *ngFor="let causeType of causeTypeLst" [value]="causeType.id">
+                                            {{causeType.lookupValue}}
+                                        </igx-select-item>
+                                    </igx-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <div class="row" [style.display]="potentialCauseModal.sourceId == -1 ? 'block' : 'none'">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Source Other</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input maxlength="256" type="text" class="form-control" name="sourceOther" [(ngModel)]="potentialCauseModal.sourceOther" #sourceOther="ngModel">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Explains Is or IsNot</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <igx-checkbox id="d4ExplainsIsOrIsNot" name="d4ExplainsIsOrIsNot"  [(ngModel)]="potentialCauseModal.d4ExplainsIsOrIsNot">
+                                        <span *ngIf="potentialCauseModal.d4ExplainsIsOrIsNot==true">Yes</span>
+                                        <span *ngIf="potentialCauseModal.d4ExplainsIsOrIsNot==false">No</span>
+                                        </igx-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="mb-0">Is Probable Root Cause?</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <igx-checkbox id="d4IsProbableRootCause" name="d4IsProbableRootCause"  [(ngModel)]="potentialCauseModal.d4IsProbableRootCause">
+                                        <span *ngIf="potentialCauseModal.d4IsProbableRootCause==true">Yes</span>
+                                        <span *ngIf="potentialCauseModal.d4IsProbableRootCause==false">No</span>
+                                        </igx-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="mb-0">How Confirmed?</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input maxlength="256" type="text" class="form-control" name="d4HowConfirmed" [(ngModel)]="potentialCauseModal.d4HowConfirmed" #d4HowConfirmed="ngModel">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label class="mb-0">Additional Notes</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <textarea maxlength="256" rows="2" class="form-control" name="additionalNotes" [(ngModel)]="potentialCauseModal.additionalNotes" #additionalNotes="ngModel"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger pull-right" type="button" data-dismiss="modal" (click)="closeModal()"><i class="fa fa-times-circle mr-2"></i>Close</button>
+                    <button class="btn btn-primary pull-right" type="submit"><i class="fa fa-save mr-2"></i>Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

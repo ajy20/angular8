@@ -1,0 +1,276 @@
+<div role="tabpanel" class="tab-pane">
+    <p class="alert alert-info font-weight-bold">Specify the internal/external customer problem by identifying, 'what is wrong with what and describing the problem in quantifiable terms which will answer the questions: 'What? Where? When? How Big? How Many? etc.</p>
+    <form #d2Form="ngForm" id="d2Form" (ngSubmit)="submit()" novalidate (change)="formIsDirty()">
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            What Is The Extent of The Problem?
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row mb-2">
+                                    <div class="col-md-3">
+                                        <label class="mb-0 text-grey">#Suspect Parts:</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="number" [disabled]="d2Step.isD2Completed || !isEditable" class="form-control" name="d2NumOfSuspectParts" [(ngModel)]="d2Step.d2NumOfSuspectParts" #d2NumOfSuspectParts="ngModel">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="mb-0 text-grey">
+                                            #Actual Non Comforting Parts:
+                                        </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="number" [disabled]="d2Step.isD2Completed || !isEditable" class="form-control" name="d2NumOfActualParts" [(ngModel)]="d2Step.d2NumOfActualParts" #d2NumOfActualParts="ngModel">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <label class="mb-0 text-grey">
+                                            #Customer Reported Noncomforting Parts (For RRPm Calculation):
+                                        </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="number" [disabled]="d2Step.isD2Completed || !isEditable" class="form-control" name="d2NumOfCustomerReportedParts" [(ngModel)]="d2Step.d2NumOfCustomerReportedParts" #d2NumOfCustomerReportedParts="ngModel">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            When Was The Problem First Seen?
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row mb-2">
+                                    <div class="col-md-3">
+                                        <label class="mb-0 text-grey">Complaint Date:</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <igx-date-picker hasHeader="false" [disabled]="d2Step.isD2Completed || !isEditable" name="complaintDate" id="complaintDate" #complaintDate mode="dropdown" format="MM/dd/yyyy" mask="MM/dd/yyyy" [(ngModel)]="d2Step.d2ComplaintDate">
+                                        </igx-date-picker>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="mb-0 text-grey">
+                                            Date Nonconfirmity Created:
+                                        </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <igx-date-picker [disabled]="d2Step.isD2Completed || !isEditable" name="nonConfirmityCreatedDate" id="nonConfirmityCreatedDate" #nonConfirmityCreatedDate mode="dropdown" format="MM/dd/yyyy" mask="MM/dd/yyyy" [(ngModel)]="d2Step.d2NonConfirmityCreatedDate">
+                                        </igx-date-picker>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Target date for closure
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <label class="mb-0 text-grey">
+                                            Target Closure Date:
+                                        </label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <igx-date-picker [disabled]="d2Step.isD2Completed || !isEditable" name="targetClosureDate" id="targetClosureDate" #targetClosureDate mode="dropdown" format="MM/dd/yyyy" mask="MM/dd/yyyy" [(ngModel)]="d2Step.d2TargetClosureDate">
+                                        </igx-date-picker>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <table class="table table-bordered table-condensed" id="describeTable">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>
+                                <label style="font-size: large;">Is</label>
+                            </th>
+                            <th>
+                                <label style="font-size: large;">Is Not</label>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="d2Step.what" id="whatView">
+                            <td colspan="3" style="font-size: large;" id='whatView' name='whatView' #whatView (click)="whatViewClick()">
+                                <i class="fa fa-plus"></i> What
+                            </td>
+                        </tr>
+                        <tr *ngFor="let qnaWhat of d2Step.what;let index = index;" [style.display]="whatQnAView ? '' : 'none'">
+                            <td class="question-align">{{qnaWhat.question}}</td>
+                            <td>
+                                <textarea maxlength="1024" rows="2" [disabled]="d2Step.isD2Completed || !isEditable" class="form-control" name="answerIsWhat--{{index}}" [(ngModel)]="d2Step.what[index].answerIs"></textarea>
+                            </td>
+                            <td>
+                                <textarea maxlength="1024" rows="2" [disabled]="d2Step.isD2Completed" class="form-control" name="answerIsNotWhat--{{index}}" [(ngModel)]="d2Step.what[index].answerIsNot"></textarea>
+                            </td>
+                        </tr>
+                        <tr *ngIf="d2Step.where">
+                            <td colspan="3" style="font-size: large;" id='whereView' name='whereView' #whereView (click)="whereViewClick()">
+                                <i class="fa fa-plus"></i> Where
+                            </td>
+                        </tr>
+                        <tr *ngFor="let qnaWhere of d2Step.where;let i = index" [style.display]="whereQnAView ? '' : 'none'">
+                            <td class="question-align">{{qnaWhere.question}}</td>
+                            <td>
+                                <textarea maxlength="1024" rows="2" [disabled]="d2Step.isD2Completed || !isEditable" class="form-control" name="answerIsWhat{{i}}" [(ngModel)]="d2Step.where[i].answerIs"></textarea>
+                            </td>
+                            <td>
+                                <textarea maxlength="1024" rows="2" [disabled]="d2Step.isD2Completed || !isEditable" class="form-control" name="answerIsNotWhat{{i}}" [(ngModel)]="d2Step.where[i].answerIsNot"></textarea>
+                            </td>
+                        </tr>
+
+                        <tr *ngIf="d2Step.when">
+                            <td colspan="3" style="font-size: large;" id='whenView' name='whenView' #whenView (click)="whenViewClick()">
+                                <i class="fa fa-plus"></i> When
+                            </td>
+                        </tr>
+                        <tr *ngFor="let qnaWhen of d2Step.when;let i=index" [style.display]="whenQnAView ? '' : 'none'">
+                            <td class="question-align">{{qnaWhen.question}}</td>
+                            <td>
+                                <textarea maxlength="1024" rows="2" [disabled]="d2Step.isD2Completed || !isEditable" class="form-control" name="answerIsWhat-{{i}}" [(ngModel)]="d2Step.when[i].answerIs"></textarea>
+                            </td>
+                            <td>
+                                <textarea maxlength="1024" rows="2" [disabled]="d2Step.isD2Completed || !isEditable" class="form-control" name="answerIsNotWhat-{{i}}" [(ngModel)]="d2Step.when[i].answerIsNot"></textarea>
+                            </td>
+                        </tr>
+
+                        <tr *ngIf="d2Step.extent">
+                            <td colspan="3" style="font-size: large;" id='extentView' name='extentView' #extentView (click)="extentViewClick()">
+                                <i class="fa fa-plus"></i> Extent
+                            </td>
+                        </tr>
+                        <tr *ngFor="let qnaExtent of d2Step.extent;let j=index" [style.display]="extentQnAView ? '' : 'none'">
+                            <td class="question-align">{{qnaExtent.question}}</td>
+                            <td>
+                                <textarea maxlength="1024" rows="2" [disabled]="d2Step.isD2Completed || !isEditable" class="form-control" name="answerIsWhat---{{j}}" [(ngModel)]="d2Step.extent[j].answerIs"></textarea>
+                            </td>
+                            <td>
+                                <textarea maxlength="1024" rows="2" [disabled]="d2Step.isD2Completed || !isEditable" class="form-control" name="answerIsNotWhat---{{j}}" [(ngModel)]="d2Step.extent[j].answerIsNot"></textarea>
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+
+
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Problem Summary
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row mb-2">
+                                    <div class="col-md-12">
+                                        <textarea maxlength="1024" rows="5" [disabled]="d2Step.isD2Completed || !isEditable" class="form-control" name="problemSummary" [(ngModel)]="d2Step.d2ProblemSummary" #problemSummary="ngModel"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            Attachment
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-3" *ngIf="isEditable">
+                                            <label class="mb-0 text-grey">Browse:</label>
+                                        </div>
+                                        <div class="col-md-9" *ngIf="isEditable">
+                                            <p-fileUpload [disabled]="d2Step.isD2Completed || !isEditable" #form name="demo[]" customUpload="true" (uploadHandler)="myUploader($event,form)" (onUpload)="onUpload($event)" (onBeforeSend)="onBeforeSend($event)" multiple="multiple" [maxFileSize]=fileUploadSize>
+                                                <ng-template pTemplate="content">
+                                                    <div>
+                                                        <ul *ngIf="uploadedFiles.length">
+                                                            <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                                                        </ul>
+                                                    </div>
+                                                </ng-template>
+                                            </p-fileUpload>
+                                        </div>
+                                        <div class="col-md-3 mt-2">
+                                            <label class="mb-0 text-grey">Attachments:</label>
+                                        </div>
+                                        <div class="col-md-9 mt-2">
+                                            <span>Count: {{fileCount}}</span>
+                                            <div class="file-list" *ngIf="fileCount!=0">
+                                                <p-scrollPanel [style]="{width: '100%', height: '100px'}">
+                                                    <span *ngFor="let attachment of d2StepAttachment">
+                                                        <h5>{{attachment.name}}
+                                                            <a (click)="deleteAttachment(attachment.id)" ><i *ngIf="isEditable && !d2Step.isD2Completed"  class="fa fa-trash fa-3"></i></a>
+                                                            <a [href]="attachment.url" *ngIf="!isEditable" [download]="attachment.name" [target]="_blank" style="margin-left: 1px;"><i class="fa fa-download fa-3"></i></a>
+                                                        </h5>
+                                                    </span>
+                                                </p-scrollPanel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center mb-2" *ngIf="isEditable">
+                    <input name="isD2Complete" [(ngModel)]="d2Step.isD2Completed" #isD2Complete="ngModel" type="checkbox" />
+                    <label for="chkD2IsCompleted">Set this step to complete</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <button type="button" class="btn btn-primary mr-2" (click)="redirectToStep('D1')">Previous</button>
+                    <button type="button" class="btn btn-primary mr-2" type="submit" *ngIf="isEditable" [disabled]="!d2Form.form.valid ">Save</button>
+                    <button type="button" class="btn btn-primary" (click)="redirectToStep('D3')">Next</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>

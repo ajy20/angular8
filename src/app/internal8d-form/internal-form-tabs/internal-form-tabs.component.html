@@ -1,0 +1,19 @@
+<div class="row mb-2">
+  <div class="col-md-6">
+    <form class="form-inline">
+      <div class="form-group">
+        <label for="8dNumber">8D Number:</label> {{incidentNumber}}
+      </div>
+    </form>
+  </div>
+  <div class="col-md-6 text-right">
+    <a class='btn btn-primary btn-sm' style="margin-right: 10px;" (click)="print8dPdf()" ><i class="fa fa-print fa-3"></i></a>
+    <a class='btn btn-primary btn-sm' style="margin-right: 10px;" (click)="redirectToIncidentDetails()">Back to Incident Form</a>
+  
+  </div>
+</div>
+<div class="progress">
+  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="internal8DProgress" aria-valuemin="0" aria-valuemax="100" [style.width.%]="internal8DProgress">
+    {{internal8DProgress}}
+  </div>
+</div>

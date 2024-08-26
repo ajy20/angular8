@@ -1,0 +1,46 @@
+{
+    "Data": {
+        "VSD": [
+            {
+                "Type": [
+                    {
+                        "YK": [
+                            {
+                                "Qty": 2,
+                                "QtyDetails": [
+                                    {
+                                        /// Details 1
+                                    },
+                                    {
+                                        /// Details 2
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "Proactive_Tool": [
+            {
+                "Type": [
+                    {
+                        "YK": [
+                            {
+                                "Qty": 2,
+                                "QtyDetails": [
+                                    {
+                                        /// Details 1
+                                    },
+                                    {
+                                        /// Details 2
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,12 @@
+<ul class="nav navbar-nav side-nav">
+    <li [ngClass]="(activeTab=='Dashboard')?'active':'none'" *ngIf="currentRole!=pageAdmin"><a [routerLink]="['home']"><i class="fa fa-tachometer"></i> Dashboard</a></li>
+    <li [ngClass]="(activeTab=='Manage User')?'active':'none'" *ngIf="currentRole==pageAdmin"><a [routerLink]="['user']"><i class="fa fa-user"></i> Manage User</a></li>
+    <li [ngClass]="(activeTab=='Product')?'active':'none'" *ngIf="currentRole==pageAdmin"><a [routerLink]="['product']"><i class="fa fa-product-hunt"></i> Manage Product</a></li>
+    <li [ngClass]="(activeTab=='Team')?'active':'none'" *ngIf="currentRole==pageAdmin"><a [routerLink]="['teams']"><i class="fa fa-users"></i> Manage Team</a></li>
+    <li [ngClass]="(activeTab=='8D Toolkit')?'active':'none'"><a [routerLink]="['toolkit']"><i class="fa fa-wrench"></i> 8D Toolkit</a></li>
+
+    <li class="footer">
+        <img src="../../../assets/images/jci_logo.png" class="jci-logo">
+        <h4>Copyright &copy; 2020 Johnson Controls</h4>
+    </li>
+</ul>
